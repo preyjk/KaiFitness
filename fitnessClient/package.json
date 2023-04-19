@@ -9,13 +9,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react-swc": "^3.0.0",
-    "vite": "^4.2.0"
-  }
+    "babel-loader": "^9.1.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "vite": "^4.2.0",
+    "webpack": "^5.79.0"
+  },
+  "main": "vite.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
