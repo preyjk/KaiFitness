@@ -1,6 +1,6 @@
 import React from "react";
-import "../styles/pageWapper.css"
-class PageWapper extends React.Component{
+import "./PageWapper.css"
+export default class PageWapper extends React.Component{
     constructor(props){
         super(props);
     }
@@ -15,5 +15,3 @@ class PageWapper extends React.Component{
         );
     }
 }
-
-export default PageWapper;

@@ -1,9 +1,9 @@
 import React from "react";
-import "../styles/Home.css"
-import SearchBar from "./searchBar";
-import Filter from "./Filter";
-import HomeContent from "./homeContent";
-import PageWapper from "./PageWapper";
+import "./Home.css"
+import SearchBar from "../SearchBar/SearchBar";
+import Filter from "../Filter/Filter";
+import HomeContent from "../HomeContent/HomeContent";
+import PageWapper from "../PageWapper/PageWapper";
 const Home = () => {
     return(
         <div className="Home">

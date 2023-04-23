@@ -1,6 +1,6 @@
 import React from "react";
-import "../styles/homeContent.css"
-class HomeContent extends React.Component{
+import "./HomeContent.css"
+export default class HomeContent extends React.Component{
     constructor(props){
         super(props);
     }
@@ -208,4 +208,3 @@ class HomeContent extends React.Component{
     }
 }
 
-export default HomeContent;

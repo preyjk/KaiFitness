@@ -1,6 +1,6 @@
 import React from "react";
-import "../styles/Filter.css"
-class Filter extends React.Component{
+import "./Filter.css"
+export default class Filter extends React.Component{
     constructor(props){
         super(props);
     }
@@ -15,5 +15,3 @@ class Filter extends React.Component{
         );
     }
 }
-
-export default Filter;
