@@ -5,6 +5,7 @@ import React from 'react';
 import Header from "./components/Header/Header";
 import Home from './components/HomePage/Home/Home';
 import Footer from "./components/Footer/Footer";
+import SubPlan from './components/PlanSubmitPage/SubPlan/SubPlan';
 
 var App = function App() {
 
@@ -13,7 +14,8 @@ var App = function App() {
     { className: '' },
     React.createElement(Header, null),
     React.createElement(Home, null),
-    React.createElement(Footer, null)
+    React.createElement(Footer, null),
+    React.createElement(SubPlan,null)
   );
 };
 
