@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import "./Home.css"
 import SearchBar from "../SearchBar/SearchBar";
 import Filter from "../Filter/Filter";
@@ -8,67 +9,23 @@ import PageWapper from "../PageWapper/PageWapper";
 export default class Home extends Component {
     state = {
         recipes:[
-            {
-                id:"1", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-
-            },
-            {
-                id:"2", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-
-            },
-            {
-                id:"3", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-                
-            },
-            {
-                id:"4", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-                
-            },
-            {
-                id:"5", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:false,
-
-            },
-            {
-                id:"6", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:false,
-                
-            },
-            {
-                id:"7", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-
-            },
-            {
-                id:"8", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:false,
-                
-            },
-            {
-                id:"9", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-
-            },
-            {
-                id:"10", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:false,
-                
-            },
-            {
-                id:"11", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-
-            },
-            {
-                id:"12", title:"Cucumber, Cottage Cheese, and Grilled Chicken Toasts",
-                subtitle:"With Balsamic Vinegar and Italian Herbs", type:true,
-                
-            }
+            
         ]   
+    }
+    getRecipes=()=>{
+        axios.get('http://localhost:5173/api/recipes').then(
+            respose=>{
+                // console.log("GetHotSuccess",respose.data);
+                this.setState({recipes:respose.data})
+            },
+            error=>{
+                console.log("GetHotFail",error);
+            }
+            
+        )
+    }
+    componentDidMount(){
+        this.getRecipes()
     }
     
     render() {
@@ -77,6 +34,7 @@ export default class Home extends Component {
             <div className="Home">
                 <SearchBar />
                 <Filter />
+                {/* <button onClick={this.getRecipes}>getRecipes</button> */}
                 <HomeContent recipes={recipes} />
                 <PageWapper />
             </div>  
