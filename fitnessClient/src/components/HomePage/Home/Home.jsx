@@ -1,43 +1,18 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import "./Home.css"
+import {Link} from 'react-router-dom'
 import SearchBar from "../SearchBar/SearchBar";
 import Filter from "../Filter/Filter";
 import HomeContent from "../HomeContent/HomeContent";
 import PageWapper from "../PageWapper/PageWapper";
+import "./Home.css"
 
-export default class Home extends Component {
-    state = {
-        recipes:[
-            
-        ]   
-    }
-    getRecipes=()=>{
-        axios.get('http://localhost:5173/api/recipes').then(
-            respose=>{
-                // console.log("GetHotSuccess",respose.data);
-                this.setState({recipes:respose.data})
-            },
-            error=>{
-                console.log("GetHotFail",error);
-            }
-            
-        )
-    }
-    componentDidMount(){
-        this.getRecipes()
-    }
-    
-    render() {
-        const {recipes} = this.state
-        return (
-            <div className="Home">
-                <SearchBar />
-                <Filter />
-                {/* <button onClick={this.getRecipes}>getRecipes</button> */}
-                <HomeContent recipes={recipes} />
-                <PageWapper />
-            </div>  
-        )
-    }
+export default function Home() {
+    return (
+        <div className="Home">
+            <SearchBar />
+            <Filter />
+            <HomeContent />
+            <PageWapper />
+        </div> 
+    )
 }

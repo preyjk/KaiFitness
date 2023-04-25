@@ -1,21 +1,24 @@
 //import { useState } from 'react'
-import React, { Component } from 'react'
 
-import Header from "./components/Header";
-import Home from './components/HomePage/Home';
-import Footer from "./components/Footer";
-import SubPlan from './components/PlanSubmitPage/SubPlan/SubPlan';
+import React, { Component } from 'react'
+import {Routes,Route} from 'react-router-dom'
+import Header from './components/Header/Header';
+import Navigation from './components/HomePage/Navigation/Navigation';
+import HomePage from './pages/HomePage';
+import PlanPage from './pages/PlanPage';
+import Footer from './components/Footer/Footer';
 import './App.css'
 
-export default class App extends Component {
-  render() {
-    return (
-      <div className=''>
+export default function App() {
+  return (
+    <div className=''>
         <Header/>
-        <Home/>
+        <Navigation />
+        <Routes>
+          <Route path='/home' element={<HomePage />}/>
+          <Route path='/plan' element={<PlanPage />}/>
+        </Routes>
         <Footer/>
-        <SubPlan/>
-      </div>
-    )
-  }
+    </div>
+  )
 }

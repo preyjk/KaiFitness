@@ -1,26 +1,20 @@
 import React from "react";
+import PubSub from 'pubsub-js'
+// import axios from 'axios'
 import "./Filter.css"
-import axios from 'axios'
-export default class Filter extends React.Component{
-    getHot=()=>{
-        axios.get().then(
-            respose=>{
-                console.log("GetHotSuccess",respose.data);
-            },
-            error=>{
-                console.log("GetHotFail",error);
-            }
-            
-        )
+
+export default function Filter() {
+    const getType=(type)=>{
+        return()=>{
+            PubSub.publish('gettype',type)
+        }
     }
-    render(){
-        return(
-            <section className="Filter">
-                <a href="#" onClick={this.getHot}>/Hot</a>
-                <a href="#">/New</a>
-                <a href="#">/Late</a>
-                <a href="#">/**</a>
-            </section>  
-        );
-    }
+    return (
+        <section className="Filter">
+            <a href="#" onClick={getType('hot')}>/Hot</a>
+            <a href="#" onClick={getType('new')}>/New</a>
+            <a href="#" onClick={getType('last')}>/Last</a>
+            <a href="#" onClick={getType('default')}>/Default</a>
+        </section> 
+    )
 }
