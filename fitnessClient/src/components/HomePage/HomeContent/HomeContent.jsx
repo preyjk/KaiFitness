@@ -62,7 +62,7 @@ export default function HomeContent() {
     // };
     return (
         <section className="homeContent">
-            <div>
+            <div className="cotentCard">
                 {
                     recipes.map((recipe)=>{
                         return <Recipes key={recipe.id} {...recipe} />

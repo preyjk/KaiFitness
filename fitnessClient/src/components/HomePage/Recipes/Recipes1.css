@@ -1,40 +1,29 @@
-.Recipes{
-    background-color: #fff;
-    min-height: 300px;
-    height: inherit;
+.Recipes {
+    position: relative;
     width: calc(25% - 10px);
-    margin: 5px;
+    min-height: 300px;
     overflow: hidden;
-    position: relative;
     align-items: stretch;
+    background-color: #fff;
+}
+.rbox {
+    width: 100%;
+    height: 100%;
+    display: block;
     cursor: pointer;
-    max-height: 320px;
-}
-
-.Recipes a{
-    text-decoration: none;
-    color: black;
-}
-
-.Recipes div{
     overflow: hidden;
     position: relative;
-    width: 100%;
 }
-
 .Recipes img{
     display: block;
     width: 100%;
     height: 100%;
 }
-
-
 .summary{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
 }
-
 .title{
     font-size: 16px;
     margin: 15px 10px 5px;
@@ -42,7 +31,6 @@
     font-weight: 400;
     line-height: 16px;
 }
-
 .sub-title{
     font-size: 14px;
     line-height: 14px;
@@ -56,27 +44,28 @@
     margin: 5px 10px 20px 10px;
 }
 
-.mask{
+
+.mask {
     position: absolute;
+    top: 0;
     right: 0;
     left: 0;
     bottom: -82%;
     width: 100%;
     height: 100%;
+    opacity: 0;
     display: flex;
     flex-direction: column;
-    /* align-items: center;
-    justify-content: space-between; */
-    background: rgba(0,0,0,0.3);
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(46, 81, 111, 0.8);
+    padding: 16px 0;
     box-sizing: border-box;
-    transition: all 0.8s;
-    max-height: 300px;
-    border-radius: 0;
-    padding: 20px 10px;
+    transition: all 1s;
 }
-
-
-.Recipes:hover .mask{
-    background: #fff;
-    bottom: 89%;
+.Recipes:hover .mask {
+    background: rgba(86, 32, 112, 0.8);
+    padding: 30px 0;
+    bottom: 0;
+    /* opacity: 1; */
 }

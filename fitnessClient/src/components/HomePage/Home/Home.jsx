@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import React from 'react'
 import SearchBar from "../SearchBar/SearchBar";
 import Filter from "../Filter/Filter";
 import HomeContent from "../HomeContent/HomeContent";
