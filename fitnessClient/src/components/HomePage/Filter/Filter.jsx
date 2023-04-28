@@ -1,38 +1,26 @@
-import React,{useState} from "react";
-import PubSub from 'pubsub-js'
-// import axios from 'axios'
-import { UpCircleTwoTone, FireTwoTone, MinusCircleTwoTone,DownCircleTwoTone } from '@ant-design/icons';
-import { Menu } from 'antd';
+import React from "react";
 import "./Filter.css"
-
-const items = [
-    {
-      label: 'Default',
-      key: 'default',
-      icon: <MinusCircleTwoTone />,
-    },
-    {
-        label: 'Hot',
-        key: 'hot',
-        icon: <FireTwoTone twoToneColor="red"/>,
-    },
-    {
-        label: 'New',
-        key: 'new',
-        icon: <UpCircleTwoTone twoToneColor="#52c41a"/>,
-    },
-    {
-        label: 'Last',
-        key: 'last',
-        icon: <DownCircleTwoTone twoToneColor="pink"/>,
-    },
-];
-
-export default function Filter() {
-    const [current, setCurrent] = useState('default');
-    const getType=(e)=>{
-        PubSub.publish('gettype',e.key)
-        setCurrent(e.key);
+import axios from 'axios'
+export default class Filter extends React.Component{
+    getHot=()=>{
+        axios.get().then(
+            respose=>{
+                console.log("GetHotSuccess",respose.data);
+            },
+            error=>{
+                console.log("GetHotFail",error);
+            }
+            
+        )
     }
-    return <Menu onClick={getType} selectedKeys={[current]} mode="horizontal" items={items} />;
+    render(){
+        return(
+            <section className="Filter">
+                <a href="#" onClick={this.getHot}>/Hot</a>
+                <a href="#">/New</a>
+                <a href="#">/Late</a>
+                <a href="#">/**</a>
+            </section>  
+        );
+    }
 }

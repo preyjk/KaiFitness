@@ -1,11 +1,12 @@
 .homeContent{
     display: flex;
+    border: 1px yellow solid;
     width: 100%;
     justify-content: center;
     background-color: #f0f4f6;
 }
 
-.homeContent .cotentCard{
+.homeContent div{
     display: flex;
     width: 100%;
     max-width: 1280px;

@@ -1,74 +1,21 @@
-import React,{useEffect, useState} from "react";
-import PubSub from 'pubsub-js'
-import axios from 'axios'
+import React from "react";
 import Recipes from "../Recipes/Recipes";
 import "./HomeContent.css"
+export default class HomeContent extends React.Component{
 
-export default function HomeContent() {
-    const [recipes, setRecipes] = useState([]);
-    const getRecipes=(type)=>{
-        console.log(type)
-        axios.get('/api/recipes').then(
-            respose=>{
-                // console.log("GetSuccess",respose.data);
-                setRecipes(respose.data);
-            },
-            error=>{
-                console.log("GetRecipesFail",error);
-            }
-            
-        )
+    render(){
+        const {recipes} = this.props
+        return(
+            <section className="homeContent">
+                <div>
+                    {
+                        recipes.map((recipe)=>{
+                            return <Recipes key={recipe.id} {...recipe} />
+                        })
+                    }
+                </div>
+            </section>  
+        );
     }
-
-    useEffect(()=>{
-        getRecipes("default");
- 
-    },[])
-    /*
-    useEffect(()=>{
-        axios.get(`/api/recipes/${type}`).then(
-            respose=>{
-                // console.log("GetSuccess",respose.data);
-                setRecipes(respose.data);
-            },
-            error=>{
-                console.log("GetRecipesFail",error);
-            }
-            
-        )
- 
-    },type)
-
-    */
-    useEffect(()=>{
-        const typeToken = PubSub.subscribe('gettype',(_,type)=>{
-            getRecipes(type);
-        })
-
-        return()=>{
-            PubSub.unsubscribe(typeToken)
-        }
-    },[])
-
-    // componentDidMount=()=>{
-    //     getRecipes("default");
-    //     this.typeToken = PubSub.subscribe('gettype',(_,type)=>{
-    //         getRecipes(type);
-    //     })
-    
-    // }
-    // componentWillUnmount=()=>{
-    //     PubSub.unsubscribe(this.typeToken);
-    // };
-    return (
-        <section className="homeContent">
-            <div className="cotentCard">
-                {
-                    recipes.map((recipe)=>{
-                        return <Recipes key={recipe.id} {...recipe} />
-                    })
-                }
-            </div>
-        </section>  
-    )
 }
+
