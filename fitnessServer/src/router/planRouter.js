@@ -6,8 +6,8 @@ const Plan = require("../db/plan")
 const planRouter = express.Router()
 
 planRouter.get("/planList",(req,res) =>{
-    let tag = req.param("tag")
-    let pageNo = Number(req.param("pageNo"))
+    let tag = req.query["tag"]
+    let pageNo = Number(req.query["pageNo"])
     let pageSize = 20;
     Plan.find({tag:tag}).sort({name:1}).skip(pageNo * pageSize).limit(20).then((data) =>{
         res.status(200).json(data)

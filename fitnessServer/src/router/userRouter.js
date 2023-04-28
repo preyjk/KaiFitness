@@ -1,9 +1,11 @@
 
 const express = require("express");
+const md5 = require("md5")
+const jwt = require("jsonwebtoken")
+const sercetKey = require("../secret.js");
 
 const User = require("../db/user")
 const userRouter = express.Router()
-
 userRouter.post("/signUp",(req,res) =>{
     const user = new User({
         user : req.body.user,
@@ -13,14 +15,19 @@ userRouter.post("/signUp",(req,res) =>{
         weight: req.body.weight,
         profilePicBase64: req.body.profilePicBase64
     })
-    user.save();
-    res.send(user._id)
+    user.save().then(() =>{
+        res.status(200).send(user._id)
+    });
 })
 
+userRouter.get("/",(req,res) =>{
+    res.send("nmsl")
+})
 
-userRouter.get("/signIn",(req,res) =>{
-    let flag = User.IdentifyByPassword(req.param("name"),req.param("password"))
-    let user = User.findByIdAndRemove(req.param("name"))
+userRouter.get("/signIn",async function(req,res){
+    let user = await User.findOne({user : req.query["user"]})
+    console.log(user)
+    let flag = md5(req.query["password"]) === user.password
     if(flag){
         let token = 'Bearer ' + jwt.sign(
             {
@@ -31,15 +38,13 @@ userRouter.get("/signIn",(req,res) =>{
               expiresIn: 3600 * 24 * 3
             }
           )
-          res.status(200)
-          res.json({
+          res.status(200).json({
             status: 'ok',
             data: { token: token }
           })
     }else{
         res.status(400).json({"message":"password or username error!"})
     }
-
 })
 
 
