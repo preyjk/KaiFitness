@@ -13,23 +13,9 @@ const userSchema = new Schema({
     height: Number,
     weight:Number,
     profilePicBase64:String
-});
+},{
+    timestamps: true
+  });
 
-// query by name
-userSchema.statics.findByName = async function(name) {
-    console.log("findByName   " + name)
-    this.find({user:name}).findOne().then((data) =>{
-        console.log(data)
-    })
-    return "user"
-}
-
-// identify by password
-userSchema.statics.IdentifyByPassword = function(name,password) {
-    let user =  this.findByName(name)
-    console.log("IdentifyByPassword   " + user)
-    return user.password === md5(password)
-}
-
-const User = mongoose.model('UserInfo', userSchema);
+const User = mongoose.model('userinfos', userSchema);
 module.exports = User;

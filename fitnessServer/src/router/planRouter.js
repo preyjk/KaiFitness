@@ -6,12 +6,20 @@ const Plan = require("../db/plan")
 const planRouter = express.Router()
 
 planRouter.get("/planList",(req,res) =>{
+    try{
     let tag = req.query["tag"]
+    console.log(tag)
     let pageNo = Number(req.query["pageNo"])
+    console.log(pageNo)
     let pageSize = 20;
-    Plan.find({tag:tag}).sort({name:1}).skip(pageNo * pageSize).limit(20).then((data) =>{
+    Plan.find({type:tag}).sort("name").skip(pageNo*pageSize).limit(20).then((data) =>{
+        console.log(data)
         res.status(200).json(data)
     })
+}
+catch(e){
+    console.log(e)
+}
 })
 
 planRouter.get("/personal/planDetail",(req,res) =>{
@@ -52,12 +60,27 @@ planRouter.get("/personal/planDetail",(req,res) =>{
 })
 
 planRouter.post("/personal/AddPlan",(req,res) =>{
-    const muscleGroup = []
-    const dietGroup = []
+    var muscleGroup = []
+    var dietGroup = []
     if(req.body.type === "diet"){
-        dietGroup = req.body.Group
+        req.body.group.forEach(element => {
+            var item = {
+                diet:element.diet,
+                weight:element.weight
+            }
+            console.log(item)
+            dietGroup.push(item)
+        });
     }else{
-        muscleGroup = req.body.Group
+        req.body.group.forEach(element => {
+            var item = {
+                muscle:element.muscle,
+                number:element.number,
+                weight:element.weight,
+            }
+            console.log(item)
+            muscleGroup.push(item)
+        });
     }
     const plan = new Plan({
         type:req.body.type,

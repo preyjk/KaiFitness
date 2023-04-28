@@ -12,11 +12,11 @@ const app = express();
 
 //检查，解析token，设置需要权限的路由地址
 //自动为req对象添加user属性，包含解析后的token内容
-app.use(
-  expressJWT({ secret: sercetKey, algorithms: ["HS256"] }).unless({
-    path: ["/user/signIn", "/user/signUp"],
-  })
-);
+// app.use(
+//   expressJWT({ secret: sercetKey, algorithms: ["HS256"] }).unless({
+//     path: ["/user/signIn", "/user/signUp"],
+//   })
+// );
 
 //使res.body能被解析，否则post请求中的req.body无法被解析
 app.use(

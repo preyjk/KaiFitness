@@ -20,9 +20,6 @@ userRouter.post("/signUp",(req,res) =>{
     });
 })
 
-userRouter.get("/",(req,res) =>{
-    res.send("nmsl")
-})
 
 userRouter.get("/signIn",async function(req,res){
     let user = await User.findOne({user : req.query["user"]})
