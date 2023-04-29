@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom'
 export default function Navigation() {
   return (
     <div>
-        \<NavLink to='/home'>Home</NavLink> \ 
+        \<NavLink to='/'>Home</NavLink> \ 
         <NavLink to='/plan'>Plan</NavLink>
     </div>
   )
