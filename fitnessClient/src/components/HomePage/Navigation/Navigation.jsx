@@ -6,8 +6,7 @@ export default function Navigation() {
   return (
     <div>
         \<NavLink to='/'>Home</NavLink> \ 
-        <NavLink to='/plan'>Plan</NavLink> \
-        <NavLink to='/Dashboard'>Dashboard</NavLink> 
+        <NavLink to='/plan'>Plan</NavLink>
     </div>
   )
 }

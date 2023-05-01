@@ -1,17 +1,26 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import { Pagination } from 'antd';
 import "./PageWapper.css"
-export default class PageWapper extends React.Component{
-    constructor(props){
-        super(props);
-    }
-    render(){
-        return(
-            <section className="pageWapper">
-                <button>1</button>
-                <button>2</button>
-                <button>3</button>
-                <button>4</button>
-            </section>  
-        );
-    }
+
+
+export default function PageWapper() {
+    
+    const [current, setCurrent] = useState(1);
+    // const getPage=()=>{
+    //     PubSub.publish('getpage',current)
+    // }
+    useEffect(()=>{
+        const typeToken = PubSub.subscribe('gettype',(_,t)=>{
+            setCurrent(1);
+        })
+
+        return()=>{
+            PubSub.unsubscribe(typeToken)
+        }
+    },[])
+    const onChange = (page) => {
+        PubSub.publish('getpage',page)
+        setCurrent(page);
+    };
+    return <Pagination className="pageWapper" current={current} onChange={onChange} total={50}  />;
 }

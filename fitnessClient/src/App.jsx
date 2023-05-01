@@ -7,7 +7,6 @@ import Navigation from './components/HomePage/Navigation/Navigation';
 import HomePage from './pages/HomePage';
 import PlanPage from './pages/PlanPage';
 import Footer from './components/Footer/Footer';
-import DashboardPage from './pages/Dashboard';
 import './App.css'
 
 export default function App() {
@@ -18,7 +17,6 @@ export default function App() {
         <Routes>
           <Route path='/' element={<HomePage />}/>
           <Route path='/plan' element={<PlanPage />}/>
-          <Route path='/Dashboard' element={<DashboardPage />}/>
         </Routes>
         <Footer/>
     </div>
