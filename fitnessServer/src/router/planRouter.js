@@ -6,7 +6,6 @@ const Plan = require("../db/plan")
 const planRouter = express.Router()
 
 planRouter.get("/planList",(req,res) =>{
-    try{
     let tag = req.query["tag"]
     console.log(tag)
     let pageNo = Number(req.query["pageNo"])
@@ -16,14 +15,18 @@ planRouter.get("/planList",(req,res) =>{
         console.log(data)
         res.status(200).json(data)
     })
-}
-catch(e){
-    console.log(e)
-}
+})
+
+planRouter.get("/personal/planList",(req,res) =>{
+    let uuid = req.query["uuid"]
+    Plan.find({owner:uuid}).then((data) =>{
+        console.log(data)
+        res.status(200).json(data)
+    })
 })
 
 planRouter.get("/personal/planDetail",(req,res) =>{
-    let id = req.param("templateId")
+    let id = req.query["templateId"]
     Plan.findById(id)
     .findOne()
     .populate("muscleGroup.muscle")
