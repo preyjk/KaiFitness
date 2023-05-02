@@ -1,5 +1,6 @@
 .searchBar{
     height: 1fr;
-    border: 1px green solid;
     margin: 20px 10px;
+    max-width: 800px;
+    width: 60%;
 }

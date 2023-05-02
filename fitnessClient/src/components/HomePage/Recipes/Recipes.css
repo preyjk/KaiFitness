@@ -7,7 +7,13 @@
     overflow: hidden;
     position: relative;
     align-items: stretch;
-    padding-bottom: 24px;
+    cursor: pointer;
+    max-height: 320px;
+}
+
+.Recipes a{
+    text-decoration: none;
+    color: black;
 }
 
 .Recipes div{
@@ -50,9 +56,27 @@
     margin: 5px 10px 20px 10px;
 }
 
-.more-info button{
+.mask{
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -82%;
     width: 100%;
-    text-align: center;
-    border: none; 
-    background-color: #fff; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center;
+    justify-content: space-between; */
+    background: rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    transition: all 0.8s;
+    max-height: 300px;
+    border-radius: 0;
+    padding: 20px 10px;
+}
+
+
+.Recipes:hover .mask{
+    background: #fff;
+    bottom: 89%;
 }
