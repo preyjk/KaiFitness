@@ -6,5 +6,5 @@ const dietSchema = new Schema({
     calorie: Number
 });
 
-const Diet = mongoose.model('Diet', dietSchema);
+const Diet = mongoose.model('diets', dietSchema);
 module.exports = Diet;

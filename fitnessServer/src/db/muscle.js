@@ -7,7 +7,7 @@ const muscleSchema = new Schema({
 });
 
 
-const Muscle = mongoose.model('Muscle', muscleSchema);
+const Muscle = mongoose.model('muscles', muscleSchema);
 module.exports = Muscle;
 
 

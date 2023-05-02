@@ -1,21 +1,21 @@
 
 const express = require("express");
-const User = require("../db/user")
 const Plan = require("../db/plan")
 const Muscle = require("../db/muscle")
 const Diet = require("../db/diet")
 
 const planRouter = express.Router()
 
-planRouter.get("/planList",(req,res) =>{
+planRouter.get("/planList",async (req,res) =>{
     let tag = req.query["tag"]
     console.log(tag)
     let pageNo = Number(req.query["pageNo"])
     console.log(pageNo)
-    let pageSize = 20;
-    Plan.find({type:tag}).sort("name").skip(pageNo*pageSize).limit(20).then((data) =>{
+    let pageSize = 12;
+    let count = await Plan.find({type:tag}).count()
+    Plan.find({type:tag}).sort("name").skip((pageNo-1)*pageSize).limit(pageSize).then((data) =>{
         console.log(data)
-        res.status(200).json(data)
+        res.status(200).json({totalcount : count ,data:data})
     })
 })
 
@@ -118,38 +118,35 @@ planRouter.post("/personal/AddPlan",(req,res) =>{
 })
 
 
-planRouter.get("/personal/dashboard", async (req,res) =>{
+planRouter.get("/personal/dashboard",  async (req,res) =>{
     let inCalorie = 0;
     let outCalorie = 0;
     let totalCalorie = 0;
-    await req.query["templateId"].split(",").foreach(async (id) =>{
-        await Plan.findById(id)
+    let ids = req.query["templateId"].split(",")
+    for(const id of ids){
+        let data = await Plan.findById(id)
         .findOne()
         .populate("muscleGroup.muscle")
         .populate("dietGroup.diet")
-        .then((data) => {
-            if(data.type === "diet"){
-                data.dietGroup.forEach(item =>{
-                    inCalorie += item.weight * item.diet.calorie
-                    console.log("inCalorie: " + inCalorie)
-                })
-            }else{
-                data.muscleGroup.forEach(item =>{
-                    outCalorie +=  item.weight * item.muscle.calorie * item.number
-                    console.log("outCalorie: " + outCalorie)
-
-                })
+        if(data.type === "diet"){
+            for(const item of data.dietGroup){
+                inCalorie += item.weight * item.diet.calorie
+                console.log(inCalorie)
             }
-        })
-    })
+        }else{
+            for(const item of data.muscleGroup){
+                outCalorie +=  item.weight * item.muscle.calorie * item.number
+                console.log(outCalorie)
+
+            }
+        }
+        
+    }
     res.status(200).json({
-    totalCalorie:totalCalorie,
+    totalCalorie:inCalorie-outCalorie,
     inCalorie:inCalorie,
     outCalorie:outCalorie
-    })
-
-    
-    
+    })    
 })
 
 module.exports=planRouter
