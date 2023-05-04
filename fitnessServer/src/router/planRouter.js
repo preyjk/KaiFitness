@@ -1,19 +1,26 @@
 
 const express = require("express");
-const User = require("../db/user")
 const Plan = require("../db/plan")
+const Muscle = require("../db/muscle")
+const Diet = require("../db/diet")
 
 const planRouter = express.Router()
 
-planRouter.get("/planList",(req,res) =>{
+planRouter.get("/planList",async (req,res) =>{
     let tag = req.query["tag"]
+    let sort = req.query["sort"]
+    let sortQuery = {createdAt: 1}
+    if(sort === "latest"){
+        sortQuery = {createdAt: -1}
+    }
     console.log(tag)
     let pageNo = Number(req.query["pageNo"])
     console.log(pageNo)
-    let pageSize = 20;
-    Plan.find({type:tag}).sort("name").skip(pageNo*pageSize).limit(20).then((data) =>{
+    let pageSize = 12;
+    let count = await Plan.find({type:tag}).count()
+    Plan.find({type:tag}).sort(sortQuery).skip((pageNo-1)*pageSize).limit(pageSize).then((data) =>{
         console.log(data)
-        res.status(200).json(data)
+        res.status(200).json({totalcount : count ,data:data})
     })
 })
 
@@ -25,6 +32,20 @@ planRouter.get("/personal/planList",(req,res) =>{
     })
 })
 
+//新增测试数据用
+planRouter.get("/add",(req,res) =>{
+    const muscle = new Muscle({
+        name : "左转",
+        calorie:1000
+    })
+    muscle.save()
+    const diet = new Diet({
+        name : "西瓜",
+        calorie:1000
+    })
+    diet.save()
+})
+
 planRouter.get("/personal/planDetail",(req,res) =>{
     let id = req.query["templateId"]
     Plan.findById(id)
@@ -32,6 +53,7 @@ planRouter.get("/personal/planDetail",(req,res) =>{
     .populate("muscleGroup.muscle")
     .populate("dietGroup.diet")
     .then((data) =>{
+        console.log(data)
         var returnData = {}
         returnData.templateId = data._id
         returnData.type = data.type
@@ -51,8 +73,8 @@ planRouter.get("/personal/planDetail",(req,res) =>{
         })
         data.dietGroup.forEach(item =>{
             var itemGroup = {}
-            itemGroup.name = item.muscle.name
-            itemGroup.id = item.muscle._id
+            itemGroup.name = item.diet.name
+            itemGroup.id = item.diet._id
             itemGroup.weight = item.weight
             itemGroup.calore = item.calore
             group.push(itemGroup)
@@ -101,33 +123,35 @@ planRouter.post("/personal/AddPlan",(req,res) =>{
 })
 
 
-planRouter.get("/personal/dashboard",(req,res) =>{
-    var inClorie = 0;
-    var outClorie = 0;
-    var totalClorie = 0;
-    req.param("templateId").forEach((id) =>{
-        Plan.findById(id)
+planRouter.get("/personal/dashboard",  async (req,res) =>{
+    let inCalorie = 0;
+    let outCalorie = 0;
+    let totalCalorie = 0;
+    let ids = req.query["templateId"].split(",")
+    for(const id of ids){
+        let data = await Plan.findById(id)
         .findOne()
         .populate("muscleGroup.muscle")
         .populate("dietGroup.diet")
-        .then((data) => {
-            if(data.type === "diet"){
-                data.dietGroup.forEach(item =>{
-                    inClorie = inClorie + item.weight * item.calore
-                })
-            }else{
-                data.muscleGroup.forEach(item =>{
-                    outClorie = outClorie + item.weight * item.calore * item.number
-                })
+        if(data.type === "diet"){
+            for(const item of data.dietGroup){
+                inCalorie += item.weight * item.diet.calorie
+                console.log(inCalorie)
             }
-        })
-    totalClorie = inClorie + outClorie
+        }else{
+            for(const item of data.muscleGroup){
+                outCalorie +=  item.weight * item.muscle.calorie * item.number
+                console.log(outCalorie)
+
+            }
+        }
+        
+    }
     res.status(200).json({
-        totalCalorie:totalCalorie,
-        inCalorie:inCalorie,
-        outCalorie:outCalorie
-    })
-    })
+    totalCalorie:inCalorie-outCalorie,
+    inCalorie:inCalorie,
+    outCalorie:outCalorie
+    })    
 })
 
 module.exports=planRouter
