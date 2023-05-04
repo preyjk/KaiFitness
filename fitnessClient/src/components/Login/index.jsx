@@ -49,7 +49,7 @@ function App(props) {
 	};
 	// login
 	const onFinish = values => {
-		axios.post('/api/fitness/user/signIn', values).then(res => {
+		axios.post('/api/user/signIn', values).then(res => {
 			close(values.user);
 			let token = res.data.token;
 			sessionStorage.setItem('token', token);
@@ -63,7 +63,7 @@ function App(props) {
 	const onFinishSignUp = values => {
 		console.log(values);
 		axios
-			.post('/api/fitness/user/signUp', {
+			.post('/api/user/signUp', {
 				user: values.user,
 				password: values.password,
 				gender: values.gender,
