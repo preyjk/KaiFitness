@@ -15,7 +15,6 @@ export default function HomeContent() {
         console.log('type:',type,' page: ',page)
         axios.get(`/api/plan/planList?tag=${type}&pageNo=${page}`).then(
             respose=>{
-                // console.log("GetSuccess",respose.data);
                 console.log(respose.data)
                 setRecipes(respose.data);
             },

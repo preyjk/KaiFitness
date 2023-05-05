@@ -6,12 +6,8 @@ const muscleSchema = new Schema({
     calorie: Number
 });
 
-planSchema.static.findByName = function(name){
-    return this.find({name:name})
-}
 
-
-const Muscle = mongoose.model('Muscle', muscleSchema);
+const Muscle = mongoose.model('muscles', muscleSchema);
 module.exports = Muscle;
 
 

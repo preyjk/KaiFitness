@@ -9,12 +9,12 @@ const planSchema = new Schema({
     detail:String,
     owner:{type : Schema.Types.ObjectId,ref:"userinfos"},
     muscleGroup:[{
-        muscle:{type : Schema.Types.ObjectId,ref:"Muscle"},
+        muscle:{type : Schema.Types.ObjectId,ref:"muscles"},
         number:Number,
         weight:Number
     }],
     dietGroup:[{
-        diet:{type : Schema.Types.ObjectId,ref:"Diet"},
+        diet:{type : Schema.Types.ObjectId,ref:"diets"},
         weight:Number
     }]},{
     timestamps: true
