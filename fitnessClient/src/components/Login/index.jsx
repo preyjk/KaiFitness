@@ -10,6 +10,8 @@ import { Input, Form, Button, Select, message, InputNumber, Upload } from 'antd'
 import './index.less';
 import axios from 'axios';
 import { useState } from 'react';
+
+import cookie from 'react-cookies'
 import { LockOutlined, UserOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 function App(props) {
@@ -49,7 +51,8 @@ function App(props) {
 	};
 	// login
 	const onFinish = values => {
-		axios.get(`/api/user/login?user=${values.user}&password=${values.password}`, values).then(res => {
+		axios.get(`/api/user/signIn?user=${values.user}&password=${values.password}`).then(res => {
+			cookie.save('token','323232',{path:'/'})
 			close(values.user);
 			let token = res.data.token;
 			sessionStorage.setItem('token', token);
