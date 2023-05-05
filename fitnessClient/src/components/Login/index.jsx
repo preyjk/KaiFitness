@@ -49,7 +49,7 @@ function App(props) {
 	};
 	// login
 	const onFinish = values => {
-		axios.post('/api/user/signIn', values).then(res => {
+		axios.get(`/api/user/login?user=${values.user}&password=${values.password}`, values).then(res => {
 			close(values.user);
 			let token = res.data.token;
 			sessionStorage.setItem('token', token);
