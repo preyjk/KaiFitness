@@ -52,7 +52,7 @@ function App(props) {
 	// login
 	const onFinish = values => {
 		axios.get(`/api/user/signIn?user=${values.user}&password=${values.password}`).then(res => {
-			cookie.save('token','323232',{path:'/'})
+			cookie.save('token',token,{path:'/'})
 			close(values.user);
 			let token = res.data.token;
 			sessionStorage.setItem('token', token);
