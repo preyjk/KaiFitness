@@ -6,18 +6,19 @@ import "./HomeContent.css"
 
 export default function HomeContent() {
     const [recipes, setRecipes] = useState([]);
-    const [type, setType] = useState('muscle')
-    const [page, setPage] = useState(0)
+    const [type, setType] = useState(['mnew', 'muscle'])
+    const [page, setPage] = useState(1)
     // const [type, setType] = useState('default')
     // const [page, setPage] = useState(1)
     
     const getRecipes=()=>{
         console.log('type:',type,' page: ',page)
-        axios.get(`/api/plan/planList?tag=${type}&pageNo=${page}`).then(
+        axios.get(`/api/plan/planList?tag=${type[1]=='diet'?'diet':'muscle'}&pageNo=${page}&sort=${type[0]==('mnew'||'dnew')?'latest':null}`).then(
             respose=>{
-                // console.log("GetSuccess",respose.data);
                 console.log(respose.data)
-                setRecipes(respose.data);
+                setRecipes(respose.data.data);
+                const pages = 10*Math.ceil(respose.data.totalcount/12);
+                PubSub.publish('gettotal',pages)
             },
             error=>{
                 console.log("GetRecipesFail",error);
@@ -47,6 +48,8 @@ export default function HomeContent() {
             PubSub.unsubscribe(pageToken)
         }
     },[])
+
+
 
     useEffect(()=>{
         getRecipes();
