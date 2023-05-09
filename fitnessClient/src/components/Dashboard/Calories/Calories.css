@@ -1,74 +1,55 @@
 .Dashboard {
-    position: relative;
-    width: 100%;
-    height: 1200px;
-    background-color: rgb(240,244,246);
-  }
+  width: 100%;
+  height: auto;
+  background-color: rgb(240, 244, 246);
+  display: flex;
+  flex-wrap: wrap;
+}
 
-  .Calories {
-    position: absolute;
-    top: 3%;
-    left: 15%;
-    width: 1400px;
-    height: 500px;
-    background-color: rgb(255,255,255);
-  }
+.Calories {
+  width: 100%;
+  max-width: 1400px;
+  height: auto;
+  margin: 20px auto;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 
-  .DailyCalories {
-    position: absolute;
-    left: 12%;
-    top: 15%;
-    width: 350px;
-    height: 350px;
-    border-radius: 50%;
-    background-color: rgb(66,150,203);
-  }
-  
-  .DailyCalories h1 {
-    position: absolute;
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%, -50%);
-    font-size: 25px;
-    color: #fff;
-  }
-  
-  .DailyCalories h2 {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 25px;
-    color: #fff;
-  }
-  
-  .CaloriesDate {
-    position: absolute;
-    right: 5%;
-    top: 55%;
-    width: 400px;
-    height: 300px;
-    transform: translate(-50%, -50%);
-  }
-  
-  .CaloriesDate h1 {
-    position: absolute;
-    left: 50%;
-    top: 25%;
-    width: 100%;
-    height: 30px;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    color: rgb(33,36,50);
-  }
-  
-  .CaloriesDate h2 {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 100%;
-    height: 30px;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    color: rgb(33,36,50);
-  }
+.DailyCalories {
+  width: 100%;
+  max-width: 350px;
+  height: 350px;
+  margin: 20px;
+  border-radius: 50%;
+  background-color: rgb(66, 150, 203);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.DailyCalories h1, .DailyCalories h2 {
+  font-size: 25px;
+  color: #fff;
+}
+
+.CaloriesDate {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.CaloriesDate h1, .CaloriesDate h2 {
+  font-size: 20px;
+  color: rgb(33, 36, 50);
+  text-align: center;
+}
