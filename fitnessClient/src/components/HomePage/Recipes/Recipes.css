@@ -75,8 +75,71 @@
     padding: 20px 10px;
 }
 
+.mask p{
+    min-height: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 
 .Recipes:hover .mask{
     background: #fff;
     bottom: 89%;
+    padding: 30px 20px;
 }
+
+@media (max-width: 1024px) {
+    .Recipes:hover .mask{
+        bottom: 72%;
+        padding: 20px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Recipes:hover .mask{
+        bottom: 95%;
+        padding: 20px 10px;
+    }
+    .Recipes{
+        width: calc(50% - 10px);
+    }
+}
+
+@media (max-width: 540px) {
+    .Recipes:hover .mask{
+        bottom: 98%;
+        padding: 20px 10px;
+    }
+    h2{
+        font-size: medium;
+    }
+    p{
+        font-size: 8px;
+    }
+    .Recipes{
+        width: calc(100% - 10px);
+    }
+    .Recipes img{
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 539px) {
+    .Recipes:hover .mask{
+        bottom: 98%;
+        padding: 20px 10px;
+    }
+}
+
+@media (max-width: 320px) {
+    .Recipes:hover .mask{
+        bottom: 78%;
+        padding: 20px 10px;
+    }
+}
+
+.star{
+    bottom: 3%;
+}
+
