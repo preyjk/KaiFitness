@@ -9,7 +9,7 @@ function App() {
     const [selectedItems, setSelectedItems] = useState([]);
     const [caloriesData, setCaloriesData] = useState({
         totalCalorie: 0,
-        InCalorie: 0,
+        inCalorie: 0,
         outCalorie: 0
     });
 
@@ -22,7 +22,7 @@ function App() {
             }*/
         })
             .then((response) => {
-                console.log("aaa",response.data)
+                console.log("aaa", response.data)
                 const data = response.data;
                 const sportPlans = data.filter((plan) => plan.type === "muscle");
                 const dietPlans = data.filter((plan) => plan.type === "diet");
@@ -34,7 +34,7 @@ function App() {
             });
     }, []);
 
-    const CheckboxChange = (event,templateId) => {
+    const CheckboxChange = (event, templateId) => {
         const isChecked = event.target.checked;
         if (isChecked) {
             setSelectedItems((prevState) => [...prevState, templateId]);
@@ -65,10 +65,9 @@ function App() {
             });
     };
 
-
-    useEffect(()=>{
-        PubSub.publish('getcalories',caloriesData)
-    },[caloriesData])
+    useEffect(() => {
+        PubSub.publish('getcalories', caloriesData)
+    }, [caloriesData])
 
     return (
         <div className="Dashboard2">
@@ -77,29 +76,24 @@ function App() {
                     <h1>Sport Plans</h1>
                     <ul>
                         {sportPlanList.map((plan) => {
-                            return(
-
+                            return (
                                 <li key={plan._id}>
-                                    <h2>{plan.name}</h2>
-                                    <input type="checkbox" onChange={(event) => CheckboxChange(event, plan._id)} />
+                                    <h2>{plan.name}   <input type="checkbox" onChange={(event) => CheckboxChange(event, plan._id)} /></h2>
                                 </li>
                             )
                         }
-                                
-                            
-        )}
+                        )}
                     </ul>
                 </div>
                 <div className="RecipesPlan">
                     <h1>Recipes Plans</h1>
                     <ul>
                         {recipesPlanList.map((plan) => {
-                            return(
-                            <li key={plan._id}>
-                                <h2>{plan.name}</h2>
-                                <input type="checkbox" onChange={(event) =>CheckboxChange(event,plan._id)} />
-                            </li>
-                            )        
+                            return (
+                                <li key={plan._id}>
+                                    <h2>{plan.name}   <input type="checkbox" onChange={(event) => CheckboxChange(event, plan._id)} /></h2>
+                                </li>
+                            )
                         }
                         )}
                     </ul>
