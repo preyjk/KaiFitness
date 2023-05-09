@@ -102,7 +102,7 @@ function App() {
                         ))}
                     </ul>
                 </div>
-                <button className="button1">Completion</button>
+                <button className="button1" onClick={CompleteClick}>Completion</button>
             </div>
         </div>
     );
