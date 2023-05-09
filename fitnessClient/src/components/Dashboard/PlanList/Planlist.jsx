@@ -1,6 +1,7 @@
 import "./Planlist.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import PubSub from 'pubsub-js';
 
 function App() {
     const [sportPlanList, setSportPlanList] = useState([]);
@@ -12,6 +13,8 @@ function App() {
         outCalorie: 0
     });
 
+
+
     useEffect(() => {
         axios.get("/api/plan/personal/planList?uuid=644ba338dab1b1c5fb11b22d", {
             /*headers: {
@@ -19,7 +22,8 @@ function App() {
             }*/
         })
             .then((response) => {
-                const data = response.data.data;
+                console.log("aaa",response.data)
+                const data = response.data;
                 const sportPlans = data.filter((plan) => plan.type === "muscle");
                 const dietPlans = data.filter((plan) => plan.type === "diet");
                 setSportPlanList(sportPlans);
@@ -30,7 +34,7 @@ function App() {
             });
     }, []);
 
-    const CheckboxChange = (event, templateId) => {
+    const CheckboxChange = (event,templateId) => {
         const isChecked = event.target.checked;
         if (isChecked) {
             setSelectedItems((prevState) => [...prevState, templateId]);
@@ -42,10 +46,10 @@ function App() {
     };
 
     const CompleteClick = () => {
-        axios.post("/api/plan/personal/dashboard",
-            {
-                templateIds: selectedItems
-            },
+        axios.get(`/api/plan/personal/dashboard?templateId=${selectedItems}`,
+            // {
+            //     templateIds: selectedItems
+            // },
             {
                 headers: {
                     Authorization: localStorage.getItem("token")
@@ -54,12 +58,17 @@ function App() {
         )
             .then((response) => {
                 console.log(response.data);
-                setCaloriesData(response.data.data);
+                setCaloriesData(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     };
+
+
+    useEffect(()=>{
+        PubSub.publish('getcalories',caloriesData)
+    },[caloriesData])
 
     return (
         <div className="Dashboard2">
@@ -67,39 +76,32 @@ function App() {
                 <div className="SportPlan">
                     <h1>Sport Plans</h1>
                     <ul>
-                        {sportPlanList.map((plan) => (
-                            <li key={plan.templateId}>
-                                <h2>{plan.name}</h2>
-                                <ul>
-                                    {plan.group.map((groupItem) => (
-                                        <li key={groupItem.Id}>
-                                            <input type="checkbox" onChange={(event) => CheckboxChange(event, plan.templateId)} />
-                                            <span>{groupItem.Name}: </span>
-                                            <span>{groupItem.calorie} calories</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                        ))}
+                        {sportPlanList.map((plan) => {
+                            return(
+
+                                <li key={plan._id}>
+                                    <h2>{plan.name}</h2>
+                                    <input type="checkbox" onChange={(event) => CheckboxChange(event, plan._id)} />
+                                </li>
+                            )
+                        }
+                                
+                            
+        )}
                     </ul>
                 </div>
                 <div className="RecipesPlan">
                     <h1>Recipes Plans</h1>
                     <ul>
-                        {recipesPlanList.map((plan) => (
-                            <li key={plan.templateId}>
+                        {recipesPlanList.map((plan) => {
+                            return(
+                            <li key={plan._id}>
                                 <h2>{plan.name}</h2>
-                                <ul>
-                                    {plan.group.map((groupItem) => (
-                                        <li key={groupItem.Id}>
-                                            <input type="checkbox" onChange={(event) => CheckboxChange(event, plan.templateId)} />
-                                            <span>{groupItem.name}: </span>
-                                            <span>{groupItem.calorie} calories</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <input type="checkbox" onChange={(event) =>CheckboxChange(event,plan._id)} />
                             </li>
-                        ))}
+                            )        
+                        }
+                        )}
                     </ul>
                 </div>
                 <button className="button1" onClick={CompleteClick}>Completion</button>
