@@ -13,13 +13,13 @@ function App() {
     });
 
     useEffect(() => {
-        axios.get("/api/plan/personal/planList", {
-            headers: {
+        axios.get("/api/plan/personal/planList?uuid=644ba338dab1b1c5fb11b22d", {
+            /*headers: {
                 Authorization: localStorage.getItem("token")
-            }
+            }*/
         })
             .then((response) => {
-                const data = response.data;
+                const data = response.data.data;
                 const sportPlans = data.filter((plan) => plan.type === "muscle");
                 const dietPlans = data.filter((plan) => plan.type === "diet");
                 setSportPlanList(sportPlans);
