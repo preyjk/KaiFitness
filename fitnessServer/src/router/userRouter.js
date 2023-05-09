@@ -46,7 +46,10 @@ userRouter.get("/signIn",async function(req,res){
             )
             res.status(200).json({
                 status: 'ok',
-                data: { token: token }
+                data: { 
+                    token: token,
+                    uuid: user._id
+                 }
             })
         }else{
             res.status(400).json({"message":"password or username error!"})
