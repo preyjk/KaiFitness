@@ -28,11 +28,56 @@ planRouter.get("/planList",async (req,res) =>{
     }
 })
 
+planRouter.get("/itemList",(req,res) =>{
+    try{
+        let type = req.query["type"]
+        if(type === "muscle"){
+            Muscle.find().then((data) => {
+                res.status(200).json({data})
+
+            })
+        }else{
+            Diet.find().then((data) => {
+                res.status(200).json({data})
+
+            })
+        }
+    }catch(e){
+        res.status(500).send(e)
+    }
+})
+
+
+planRouter.post("/addItem",(req,res) =>{
+    try{
+        let type = req.body.type
+        if(type === "muscle"){
+            let muscle = new Muscle({
+                name: req.body.name,
+                calorie:req.body.calorie
+            })
+            muscle.save().then(()=>{
+                res.status(200).send("succeed")
+            })
+        }else{
+            let diet = new Diet({
+                name: req.body.name,
+                calorie:req.body.calorie  
+            })
+            diet.save().then(()=>{
+                res.status(200).send("succeed")
+            })
+        }
+    }catch(e){
+        res.status(500).send(e)
+    }
+})
+
+
 planRouter.get("/personal/planList",(req,res) =>{
     try{
         let uuid = req.query["uuid"]
         Plan.find({owner:uuid}).then((data) =>{
-            console.log(data)
             res.status(200).json(data)
         })
     }catch(e){
@@ -139,6 +184,49 @@ planRouter.post("/personal/AddPlan",(req,res) =>{
     }
 })
 
+planRouter.post("/personal/editPlan",(req,res) =>{
+    try{
+        var muscleGroup = []
+        var dietGroup = []
+        if(req.body.type === "diet"){
+            req.body.group.forEach(element => {
+                var item = {
+                    diet:element.diet,
+                    weight:element.weight
+                }
+                console.log(item)
+                dietGroup.push(item)
+            });
+        }else{
+            req.body.group.forEach(element => {
+                var item = {
+                    muscle:element.muscle,
+                    number:element.number,
+                    weight:element.weight,
+                }
+                console.log(item)
+                muscleGroup.push(item)
+            });
+        }
+
+        Plan.findByIdAndUpdate(req.body.templateId, {
+            type:req.body.type,
+            name:req.body.name,
+            imagUrl:req.body.imagBase64,
+            information:req.body.information,
+            detail:req.body.detail,
+            owner:req.body.uuid,
+            dietGroup:dietGroup,
+            muscleGroup:muscleGroup
+        }).then(()=>{
+            res.status(200).send("succeed")
+        })
+    }
+    catch(e){
+        res.status(500).send(e)
+    }
+})
+
 
 planRouter.get("/personal/dashboard",  async (req,res) =>{
     try{
@@ -166,9 +254,9 @@ planRouter.get("/personal/dashboard",  async (req,res) =>{
             
         }
         res.status(200).json({
-        totalCalorie:inCalorie-outCalorie,
-        inCalorie:inCalorie,
-        outCalorie:outCalorie
+            totalCalorie:inCalorie - outCalorie,
+            inCalorie:inCalorie,
+            outCalorie:outCalorie
         })
     }
     catch(e){
