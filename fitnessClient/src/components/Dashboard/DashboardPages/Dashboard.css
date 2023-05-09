@@ -1,8 +1,0 @@
-.Dashboard {
-    position: relative;
-    width: 100%;
-    height: 1fr;
-    background-color: rgb(240,244,246);
-    display: flex;
-    flex-direction: column;
-  }
