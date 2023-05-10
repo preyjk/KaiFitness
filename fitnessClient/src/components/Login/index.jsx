@@ -55,6 +55,8 @@ function App(props) {
 			cookie.save('token',token,{path:'/'})
 			close(values.user);
 			let token = res.data.token;
+			let uuid = res.data.uuid;
+			sessionStorage.setItem('uuid',uuid);
 			sessionStorage.setItem('token', token);
 			messageApi.open({
 				type: 'success',

@@ -18,10 +18,6 @@ const items = [
 		icon: <SettingOutlined />,
 	},
 	{
-		label: 'PLANSUBMITPAGE',
-		key: '/plan',
-	},
-	{
 		label: 'PERSONAL',
 		key: 'PERSONAL',
 		children: [
@@ -30,8 +26,8 @@ const items = [
 				key: '/Dashboard',
 			},
 			{
-				label: 'Add Plan',
-				key: 'Add Plan',
+				label: 'My Plan',
+				key: '/plan',
 			},
 		],
 	},
