@@ -97,12 +97,12 @@ export default function HomeContent() {
     return (
         <section className="homeContent">
             <div className="cotentCard">
+                <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
                 {
                     recipes.map((recipe) => {
                         return <Recipes key={recipe._id} {...recipe} />
                     })
                 }
-                <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
             </div>
             <Modal
                 title="Add Workout Plan"
