@@ -60,7 +60,7 @@ const App = () => {
 	const showLogin = () => {
 		setvisible(true);
 	};
-	const isModalOpen = () => {};
+	const isModalOpen = () => { };
 	const close = value => {
 		setuser(value);
 		sessionStorage.setItem('username', value);
@@ -91,7 +91,7 @@ const App = () => {
 						showLogin();
 					}}
 				>
-					Hi,{user ? user : 'Sign in'}
+					{user ? user : 'Sign in'}
 				</a>
 				<UserOutlined className="user-icon" />
 			</div>
