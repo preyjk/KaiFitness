@@ -11,5 +11,5 @@ dietSchema.static.findByName = function(name){
 }
 
 
-const Diet = mongoose.model('Diet', dietSchema);
+const Diet = mongoose.model('diets', dietSchema);
 module.exports = Diet;

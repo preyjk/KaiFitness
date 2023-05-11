@@ -19,7 +19,10 @@ planRouter.get("/planList",async (req,res) =>{
         console.log(pageNo)
         let pageSize = 12;
         let count = await Plan.find({type:tag}).count()
-        Plan.find({type:tag}).sort(sortQuery).skip((pageNo-1)*pageSize).limit(pageSize).then((data) =>{
+        Plan.find({type:tag}).sort(sortQuery).skip((pageNo-1)*pageSize).limit(pageSize)
+        .populate("muscleGroup.muscle")
+        .populate("dietGroup.diet")
+        .then((data) =>{
             console.log(data)
             res.status(200).json({totalcount : count ,data:data})
         })
