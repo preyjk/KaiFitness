@@ -48,8 +48,8 @@ const items = [
 
 export default function Filter() {
     const [current, setCurrent] = useState('mnew');
-    const getType=(e)=>{
-        PubSub.publish('gettype',e.keyPath)
+    const getType=async(e)=>{
+        await PubSub.publish('gettype',e.keyPath)
         setCurrent(e.key);
     }
     return <Menu onClick={getType} selectedKeys={[current]} mode="horizontal" items={items} />;
