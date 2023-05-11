@@ -8,6 +8,17 @@ For details:
 
 https://github.com/UOA-CS732-SE750-Students-2023/project-group-jade-jaguars/wiki/Fitness-plan
 
+### Frontend Project setup
+
+```
+npm install
+```
+
+### Frontend Run the server
+
+```
+npm run dev
+```
 
 ### Backend Project setup
 
