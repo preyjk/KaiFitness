@@ -97,12 +97,12 @@ export default function HomeContent() {
     return (
         <section className="homeContent">
             <div className="cotentCard">
+                <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
                 {
                     recipes.map((recipe) => {
                         return <Recipes key={recipe._id} {...recipe} />
                     })
                 }
-                <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
             </div>
             <Modal
                 title="Add Workout Plan"
@@ -211,63 +211,41 @@ export default function HomeContent() {
                     <hr />
                     <ul>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Bicycle_Crunch.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Bicycle_Crunch.png" alt="" />
                             <span><strong>Bicycle Crunch</strong></span>
                             <Checkbox onChange={() => { onChange(event, 1) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Cable_Crunch.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Cable_Crunch.png" alt="" />
                             <span><strong>Cable Crunch</strong></span>
                             <Checkbox onChange={() => { onChange(event, 2) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Cable_Twist.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Cable_Twist.png" alt="" />
                             <span><strong>Cable Twist</strong></span>
                             <Checkbox onChange={() => { onChange(event, 3) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Cross_Body_Crunch.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Cross_Body_Crunch.png" alt="" />
                             <span><strong>Cross Body Crunch</strong></span>
                             <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Crunch.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Crunch.png" alt="" />
                             <span><strong>Crunch</strong></span>
                             <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
                         </li>
-                    </ul>
-                    <h3 className='theme_workout'>Arms</h3>
-                    <hr />
-                    <ul>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\arms\Bicep_Curl_Cable.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Bicep_Curl_Cable.png" alt="" />
                             <span><strong>Bicep Curl Cable</strong></span>
                             <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\arms\Bicep_Curl_Dumbbell.png" alt="" />
+                            <img className='img_workout' src="..\public\img_workout\Bicep_Curl_Dumbbell.png" alt="" />
                             <span><strong>Bicep Curl Dumbbell</strong></span>
                             <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
                         </li>
                     </ul>
-                    <h3 className='theme_workout'>Back</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Chest</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Legs</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Shoulders</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Cardio</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Other</h3>
-                    <hr />
-                    <ul></ul>
                 </Modal>
             </Modal>
         </section>
