@@ -16,7 +16,7 @@ function App() {
 
 
     useEffect(() => {
-        axios.get("/api/plan/personal/planList?uuid=644ba338dab1b1c5fb11b22d", {
+        axios.get("/api/plan/personal/planList?uuid=" + localStorage.getItem('uuid'), {
             /*headers: {
                 Authorization: localStorage.getItem("token")
             }*/

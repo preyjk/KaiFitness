@@ -52,12 +52,12 @@ function App(props) {
 	// login
 	const onFinish = values => {
 		axios.get(`/api/user/signIn?user=${values.user}&password=${values.password}`).then(res => {
-			cookie.save('token',token,{path:'/'})
 			close(values.user);
 			let token = res.data.token;
-			let uuid = res.data.uuid;
-			sessionStorage.setItem('uuid',uuid);
-			sessionStorage.setItem('token', token);
+			let uuid = res.data.data.uuid;
+			// console.log('data' + res.data.data.uuid);
+			cookie.save('token', token, { path: '/' })
+			localStorage.setItem('uuid', uuid);
 			messageApi.open({
 				type: 'success',
 				content: 'Login successful',
@@ -208,29 +208,7 @@ function App(props) {
 						<Form.Item name="weight">
 							<InputNumber min={0} placeholder="weight" />
 						</Form.Item>
-						<Form.Item name="avatar">
-							<Upload
-								name="avatar"
-								listType="picture-card"
-								className="avatar-uploader"
-								showUploadList={false}
-								action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-								beforeUpload={beforeUpload}
-								onChange={handleChange}
-							>
-								{imageUrl ? (
-									<img
-										src={imageUrl}
-										alt="avatar"
-										style={{
-											width: '100%',
-										}}
-									/>
-								) : (
-									uploadButton
-								)}
-							</Upload>
-						</Form.Item>
+
 						<Form.Item>
 							<Button type="primary" htmlType="submit" className="login-form-button">
 								Sign up

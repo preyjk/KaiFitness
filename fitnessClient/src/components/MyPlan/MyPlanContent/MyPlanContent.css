@@ -1,0 +1,155 @@
+ul {
+    list-style: none;
+    padding: 4px 11px;
+}
+
+.homeContent {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    background-color: #f0f4f6;
+}
+
+.homeContent .cotentCard {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.btn_addPlan {
+    min-height: 300px;
+    height: inherit;
+    width: calc(25% - 10px);
+    margin: 5px;
+    overflow: hidden;
+    position: relative;
+    align-items: stretch;
+    cursor: pointer;
+    max-height: 320px;
+    border: dashed 1px gray;
+    text-align: center;
+    line-height: 300px;
+    font-size: 100px;
+    color: gray;
+}
+
+.btn_addPlan:hover {
+    color: rgb(127, 127, 249);
+}
+
+.ant-modal-title {
+    text-align: center;
+}
+
+.add_plan_name {
+    border: none;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.add_plan_des {
+    border: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.btn_addWorkOut {
+    width: 100%;
+    background-color: rgb(110, 110, 248);
+}
+
+.exercise_name {
+    color: rgb(110, 110, 248);
+}
+
+.delete_exercise {
+    border: none;
+    border-radius: 5px;
+    background-color: #efeffa;
+    cursor: pointer;
+    float: right;
+}
+
+.workout_group {}
+
+.workout_group li {
+    text-align: center;
+}
+
+.workout_group li .ant-input-number-input {
+    text-align: center;
+}
+
+.number_div {
+    width: 25px;
+    height: 25px;
+    background-color: gainsboro;
+    font-weight: bold;
+    line-height: 25px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.excercise_theme {
+    display: flex;
+    flex-direction: row;
+}
+
+.exercise_theme_bold {
+    font-weight: bold;
+}
+
+.excercise_theme li:nth-child(1) {
+    flex: 1;
+}
+
+.excercise_theme li:nth-child(2) {
+    flex: 3;
+}
+
+.excercise_theme li:nth-child(3) {
+    flex: 3;
+}
+
+
+.delete_set {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 45px;
+}
+
+.ant-modal-content{
+    max-height: 800px;
+    overflow: scroll;
+}
+
+.btn_addWorkOut {
+    width: 100%;
+}
+
+.theme_workout {
+    color: gray;
+}
+
+.img_workout {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+}
+
+.modal_add_workout ul li {
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkBox_workOut {
+    position: absolute;
+    right: 0%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -99,7 +99,7 @@ const App = () => {
 				onCancel={() => {
 					setvisible(false);
 				}}
-				visible={visible}
+				open={visible}
 				footer={null}
 			>
 				<Login close={close} />

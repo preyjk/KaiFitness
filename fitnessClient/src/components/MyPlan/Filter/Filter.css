@@ -1,0 +1,10 @@
+.Filter{
+    margin: 10px 5px;
+    border: 1px red solid;
+    background-color: #f0f4f6;
+}
+
+.Filter a {
+    border: 1px red solid;
+    margin: 10px 5px;
+}

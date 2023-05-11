@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import PlanPage from './pages/PlanPage';
 import Footer from './components/Footer';
 import Login from './components/Login';
+import Dashboard from './components/Dashboard/DashboardPages/Dashboard';
 import './App.css';
 
 export default function App() {
@@ -16,9 +17,10 @@ export default function App() {
 			<Header />
 			<Navigation />
 			<Routes>
-				<Route path="/login" element={<Login />} />
 				<Route path="/" element={<HomePage />} />
+				<Route path="/login" element={<Login />} />
 				<Route path="/plan" element={<PlanPage />} />
+				<Route path="/dashboard" element={<Dashboard />} />
 			</Routes>
 			<Footer />
 		</div>
