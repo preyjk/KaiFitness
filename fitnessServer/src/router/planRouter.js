@@ -11,6 +11,7 @@ planRouter.get("/planList",async (req,res) =>{
         let tag = req.query["tag"]
         let sort = req.query["sort"]
         let sortQuery = {createdAt: 1}
+        let query = req.query["queryContent"]
         if(sort === "latest"){
             sortQuery = {createdAt: -1}
         }
@@ -18,8 +19,11 @@ planRouter.get("/planList",async (req,res) =>{
         let pageNo = Number(req.query["pageNo"])
         console.log(pageNo)
         let pageSize = 12;
-        let count = await Plan.find({type:tag}).count()
-        Plan.find({type:tag}).sort(sortQuery).skip((pageNo-1)*pageSize).limit(pageSize)
+        let count = await Plan.find({type:tag,
+            name: { $regex: query, $options: 'i' }}).count()
+        Plan.find({type:tag,
+            name: { $regex: query, $options: 'i' }})
+        .sort(sortQuery).skip((pageNo-1)*pageSize).limit(pageSize)
         .populate("muscleGroup.muscle")
         .populate("dietGroup.diet")
         .then((data) =>{
