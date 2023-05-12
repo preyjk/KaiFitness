@@ -9,10 +9,7 @@ export default function SearchBar() {
     const handleSearch=(key)=>{
         console.log(key)
         setonload(true)
-        axios.get(`https://api.github.com/search/users?q=${key}`).then(
-            response=>{console.log('S',response.data)},
-            error=>{console.log('F',error)}
-        )
+        PubSub.publish('getkey',key)
         setonload(false)
     }
     return (
