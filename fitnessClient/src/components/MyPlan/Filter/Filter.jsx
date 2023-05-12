@@ -11,45 +11,21 @@ const IconFont = createFromIconfontCN({
 const items = [
   {
     label: 'Muscle',
-    key: 'muscle',
+    key: 'myPlanMuscle',
     icon: <IconFont type="icon-jianshenfang" />,
-    children: [
-      {
-        label: 'Own',
-        key: 'mnew',
-        icon: <ProfileTwoTone twoToneColor="#52c41a" />,
-      },
-      {
-        label: 'Star',
-        key: 'mold',
-        icon: <StarTwoTone />,
-      },
-    ],
-
   },
   {
     label: 'Diet',
-    key: 'diet',
+    key: 'myPlanDiet',
     icon: <IconFont type="icon-shala" />,
-    children: [
-      {
-        label: 'Own',
-        key: 'dnew',
-        icon: <ProfileTwoTone twoToneColor="#52c41a" />,
-      },
-      {
-        label: 'Star',
-        key: 'dold',
-        icon: <StarTwoTone />,
-      },
-    ],
-  },
+  }
 ];
 
 export default function Filter() {
-  const [current, setCurrent] = useState('mnew');
+  const [current, setCurrent] = useState('myPlanMuscle');
   const getType = (e) => {
-    PubSub.publish('gettype', e.keyPath)
+    // console.log("key:" + e.key);
+    PubSub.publish('getMyplanType', e.key)
     setCurrent(e.key);
   }
   return <Menu onClick={getType} selectedKeys={[current]} mode="horizontal" items={items} />;
