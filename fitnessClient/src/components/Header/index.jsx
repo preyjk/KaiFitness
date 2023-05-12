@@ -11,6 +11,8 @@ import { UserOutlined, SettingOutlined } from '@ant-design/icons';
 import './index.less';
 import { Menu } from 'antd';
 import Login from '../Login';
+import PubSub from 'pubsub-js'
+
 const items = [
 	{
 		label: 'HOMEPAGE',
@@ -71,10 +73,23 @@ const App = () => {
 		setuser(username);
 	}, []);
 
+	// close sigUp
+	useEffect(() => {
+		const typeToken = PubSub.subscribe('closeSignUp', (_, t) => {
+			setvisible(t)
+		})
+
+		return () => {
+			PubSub.unsubscribe(typeToken)
+		}
+	}, [])
+
 	return (
 		<div className="header-box">
 			<div className="logo">
-				<a href="/"></a>
+				<a href="/">
+					<img src="../logo.svg" />
+				</a>
 			</div>
 			<Menu
 				onClick={changeMenu}
@@ -101,6 +116,7 @@ const App = () => {
 				}}
 				open={visible}
 				footer={null}
+				style={{ overflow: 'hidden' }}
 			>
 				<Login close={close} />
 			</Modal>

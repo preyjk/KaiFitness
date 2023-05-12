@@ -9,7 +9,8 @@
 import { Input, Form, Button, Select, message, InputNumber, Upload } from 'antd';
 import './index.less';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import PubSub from 'pubsub-js'
 
 import cookie from 'react-cookies'
 import { LockOutlined, UserOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
@@ -76,12 +77,13 @@ function App(props) {
 				weight: values.weight,
 				profilePicBase: imageUrl,
 			})
-			.then(res => {
-				messageApi.open({
-					type: 'success',
-					content: 'Successfully registered account',
-				});
-			});
+			.then(() => {
+				alert('signUp sucessful!')
+				PubSub.publish('closeSignUp', false)
+			})
+			.catch((e) => {
+				console.log("signUp failed:" + e);
+			})
 	};
 	const changeType = value => {
 		setshow(value);
@@ -103,7 +105,7 @@ function App(props) {
 			<div className="login">
 				<p>MyFitness</p>
 				{show === 'login' ? (
-					<Form name="normal_login" className="login-form" onFinish={onFinish}>
+					<Form name="normal_login" className="login-form" onFinish={onFinish} >
 						<Form.Item
 							name="user"
 							rules={[{ required: true, message: 'Please input your Username!' }]}
