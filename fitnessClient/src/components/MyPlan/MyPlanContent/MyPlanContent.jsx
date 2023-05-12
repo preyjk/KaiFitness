@@ -20,8 +20,10 @@ export default function HomeContent() {
     const [page, setPage] = useState(1)
 
     const getRecipes = () => {
-        axios.get(`/api/plan/planList?tag=${type[1] == 'diet' ? 'diet' : 'muscle'}&pageNo=${page}&sort=${type[0] == ('mnew' || 'dnew') ? 'latest' : null}`).then(
+        // axios.get(`/api/plan/personal/planList?uuid=` + uuid).then(
+        axios.get(`/api/plan/planList?tag=${type[1] == 'diet' ? 'diet' : 'muscle'}&pageNo=${page}&sort=${type[0] == ('mnew' || 'dnew') ? 'latest' : null}&queryContent=''`).then(
             respose => {
+                console.log('data:' + respose.data.data);
                 setRecipes(respose.data.data);
                 const pages = 10 * Math.ceil(respose.data.totalcount / 12);
                 PubSub.publish('gettotal', pages)
@@ -29,9 +31,10 @@ export default function HomeContent() {
             error => {
                 console.log("GetRecipesFail", error);
             }
-
         )
     }
+
+    const getCard = () => { }
 
     useEffect(() => {
         const typeToken = PubSub.subscribe('gettype', (_, t) => {
@@ -62,51 +65,87 @@ export default function HomeContent() {
     const workoutGroup = [
         {
             id: 1,
-            name: "Bicycle Crunch"
+            name: "Bicycle Crunch",
+            "_id": {
+                "$oid": "645cb89ddab1b1c5fb11b2a9"
+            }
         },
         {
             id: 2,
-            name: "Cable Crunch"
+            name: "Cable Crunch",
+            "_id": {
+                "$oid": "645cb8dadab1b1c5fb11b2aa"
+            }
         },
         {
             id: 3,
-            name: "Cable Twist"
+            name: "Cable Twist",
+            "_id": {
+                "$oid": "645cb910dab1b1c5fb11b2ab"
+            }
         },
         {
             id: 4,
-            name: "Cross Body Crunch"
+            name: "Cross Body Crunch",
+            "_id": {
+                "$oid": "645cb92fdab1b1c5fb11b2ac"
+            }
         },
         {
             id: 5,
-            name: "Crunch"
+            name: "Crunch",
+            "_id": {
+                "$oid": "645cba17dab1b1c5fb11b2ad"
+            }
         },
         {
             id: 6,
-            name: "Bicep Curl Cable"
+            name: "Bicep Curl Cable",
+            "_id": {
+                "$oid": "645cb797dab1b1c5fb11b2a6"
+            },
         },
         {
             id: 7,
-            name: "Bench Dip"
+            name: "Bench Dip",
+            "_id": {
+                "$oid": "645cb76bdab1b1c5fb11b2a4"
+            },
         },
         {
             id: 8,
-            name: "Bench Press"
+            name: "Bench Press",
+            "_id": {
+                "$oid": "645cb77edab1b1c5fb11b2a5"
+            },
         },
         {
             id: 9,
-            name: "Hammer Curl Band"
+            name: "Hammer Curl Band",
+            "_id": {
+                "$oid": "645cba4bdab1b1c5fb11b2ae"
+            }
         },
         {
             id: 10,
-            name: "Hammer Curl Cabel"
+            name: "Hammer Curl Cabel",
+            "_id": {
+                "$oid": "645cba87dab1b1c5fb11b2af"
+            }
         },
         {
             id: 11,
-            name: "Hammer Curl Dumbbel"
+            name: "Hammer Curl Dumbbel",
+            "_id": {
+                "$oid": "645cbb44dab1b1c5fb11b2b0"
+            }
         },
         {
             id: 12,
-            name: "Bicep Curl Dumbbell"
+            name: "Bicep Curl Dumbbell",
+            "_id": {
+                "$oid": "645cb819dab1b1c5fb11b2a7"
+            }
         }
     ]
     // add workout plan
@@ -139,6 +178,8 @@ export default function HomeContent() {
                 deleteColor: '#5151f0'
             }])
     };
+
+    // get action id list (muscle)
 
     // delete btn hover
     const setDeleteColor = (index, color) => {
@@ -180,7 +221,7 @@ export default function HomeContent() {
                 totalReps += element.sets[index].Reps;
             }
             group.push({
-                "muscle": uuid,
+                "muscle": workoutGroup[addedList[index].id - 1]._id.$oid,
                 "number": totalReps,
                 "weight": element.sets[0].kg
             })
@@ -193,13 +234,7 @@ export default function HomeContent() {
             "information": information,
             "detail": information,
             "uuid": uuid,
-            "group": [
-                {
-                    "muscle": uuid,
-                    "number": 10000,
-                    "weight": 10000
-                }
-            ]
+            "group": group
         }
         // console.log('planName:' + planName);
         // console.log('information:' + information);

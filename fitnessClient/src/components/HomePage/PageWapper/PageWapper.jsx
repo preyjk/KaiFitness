@@ -11,7 +11,7 @@ export default function PageWapper() {
     //     PubSub.publish('getpage',current)
     // }
     useEffect(()=>{
-        const typeToken = PubSub.subscribe('gettype',(_,t)=>{
+        const typeToken = PubSub.subscribe('getType',(_,t)=>{
             setCurrent(1);
         })
 
@@ -20,7 +20,7 @@ export default function PageWapper() {
         }
     },[])
     useEffect(()=>{
-        const pages = PubSub.subscribe('gettotal',(_,t)=>{
+        const pages = PubSub.subscribe('getTotal',(_,t)=>{
             setPageNum(t);
         })
         
@@ -29,7 +29,7 @@ export default function PageWapper() {
         }
     },[])
     const onChange = (page) => {
-        PubSub.publish('getpage',page)
+        PubSub.publish('getPage',page)
         setCurrent(page);
     };
 

@@ -13,30 +13,9 @@ const Footer = () => {
       <div className="center">
         <div className="top">
           <div className="left">
-            <div className="logo"></div>
-            <p>WORKOUT COMPLETE™</p>
           </div>
           <div className="right">
-            <ul>
-              <li>WORKOUTS</li>
-              <li>WORKOUT VIDEOS</li>
-              <li>CUSTOM WORKOUTS</li>
-            </ul>
-            <ul>
-              <li>PROGRAMS</li>
-              <li>WORKOUT PROGRAMS</li>
-              <li>MEAL PLANS</li>
-            </ul>
-            <ul>
-              <li>HEALTHY LIVING</li>
-              <li>EXPERT ARTICLES</li>
-              <li>HEALTHY RECIPES</li>
-              <li>WELLNESS VIDEOS</li>
-            </ul>
-            <ul>
-              <li>ABOUT</li>
-              <li>OUR TEAM</li>
-            </ul>
+
           </div>
         </div>
         <p className="tips">
