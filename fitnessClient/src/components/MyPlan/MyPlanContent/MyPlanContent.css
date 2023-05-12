@@ -1,3 +1,11 @@
+/*
+ * @Author: Jack_KaiJing
+ * @Date: 2023-05-12 18:39:13 
+ * @Last Modified by:   Jack_KaiJing
+ * @Last Modified time: 2023-05-12 18:39:13 
+ */
+
+
 ul {
     list-style: none;
     padding: 4px 11px;
@@ -59,6 +67,12 @@ ul {
 .btn_addWorkOut {
     width: 100%;
     background-color: rgb(110, 110, 248);
+}
+
+.btn_addSet {
+    width: 100%;
+    background-color: rgb(196, 196, 196);
+    font-size: 14px;
 }
 
 .exercise_name {

@@ -1,3 +1,11 @@
+/*
+ * @Author: Jack_KaiJing
+ * @Date: 2023-05-12 18:38:42 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2023-05-12 18:39:32
+ */
+
+
 import React, { useEffect, useState } from "react";
 import PubSub from 'pubsub-js'
 import axios from 'axios'
@@ -5,7 +13,6 @@ import { Checkbox, Button, Modal, Input, InputNumber } from 'antd';
 import { DeleteTwoTone, MinusSquareOutlined } from '@ant-design/icons';
 import Recipes from "../Recipes/Recipes";
 import "./MyPlanContent.css"
-import { element } from "prop-types";
 
 export default function HomeContent() {
     const [recipes, setRecipes] = useState([]);
@@ -108,50 +115,97 @@ export default function HomeContent() {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const { TextArea } = Input;
-    const [normalColor, setnormalColor] = useState('#5151f0');
     const [addedList, updateAddedList] = useState([]);
     const [checkedList, updateCheckList] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
     const [addListPrepare, updateAddListPrepare] = useState([]);
+    const [planName, setPlanName] = useState();
+    const [information, setInformation] = useState();
+
 
     // select multipy workout
     const onChange = (e, id) => {
         // console.log(`checked = ${e.target.checked}`);
-        const newArray = [...checkedList]; // 浅拷贝数组
-        newArray[id - 1] = !newArray[id - 1]; // 更新特定索引处的元素
-        updateCheckList(newArray); // 更新状态为新的数组
-        updateAddListPrepare(addListPrepare => [...addListPrepare, { id: workoutGroup[id].id, name: workoutGroup[id].name }])
+        const newArray = [...checkedList];
+        newArray[id - 1] = !newArray[id - 1];
+        updateCheckList(newArray);
+        updateAddListPrepare(addListPrepare =>
+            [...addListPrepare, {
+                id: workoutGroup[id - 1].id,
+                name: workoutGroup[id - 1].name,
+                sets: [
+                    {
+                        kg: "0",
+                        Reps: "30"
+                    }
+                ],
+                deleteColor: '#5151f0'
+            }])
     };
 
-    const sets = [2, 3, 4]
+    // delete btn hover
+    const setDeleteColor = (index, color) => {
+        const newArray = [...addedList];
+        newArray[index].deleteColor = color
+        updateAddedList(newArray);
+    }
 
     // add workout plan list
     const addWorkOut = (e) => {
         // console.log('addList:' + addList);
-        const newArray = addListPrepare.slice(); // 使用 slice() 进行浅拷贝
-        updateAddedList(newArray); // 将副本数组设置为新的状态值
+        const newArray = addListPrepare.slice();
+        updateAddedList(newArray);
         for (let index = 0; index < checkedList.length; index++) {
             updateCheckList([false, false, false, false, false, false, false, false, false, false, false, false])
         }
         setOpen2(false)
     }
 
+    // delete set
+    const deleteSet = (index_out, index) => {
+        // console.log("indexOut:" + index_out);
+        // console.log("indexIn:" + index);
+        updateAddedList(addedList => {
+            const newArray = [...addedList];
+            newArray[index_out].sets.splice(index, 1);
+            return newArray;
+        });
+    }
+
+    // addPlan (post)
     const addPlan = () => {
+        const uuid = localStorage.getItem('uuid');
+        let group = [];
+        for (let index = 0; index < addedList.length; index++) {
+            const element = addedList[index];
+            let totalReps = 0;
+            for (let index = 0; index < element.sets.length; index++) {
+                totalReps += element.sets[index].Reps;
+            }
+            group.push({
+                "muscle": uuid,
+                "number": totalReps,
+                "weight": element.sets[0].kg
+            })
+        }
+        console.log(group);
         const data = {
-            "name": "2.0",
+            "name": planName,
             "type": "muscle",
             "imagBase64": "",
-            "information": "very healthy",
-            "detail": "very healthy",
-            "uuid": "644ba338dab1b1c5fb11b22d",
+            "information": information,
+            "detail": information,
+            "uuid": uuid,
             "group": [
                 {
-                    "muscle": "644b99dedab1b1c5fb11b216",
+                    "muscle": uuid,
                     "number": 10000,
                     "weight": 10000
                 }
             ]
         }
-        axios.post(`/api/plan/personal/AddPlan?data`).then(
+        console.log('planName:' + planName);
+        console.log('information:' + information);
+        axios.post(`/api/plan/personal/AddPlan`, data).then(
             response => {
                 console.log("successful:" + response.data);
             },
@@ -159,7 +213,6 @@ export default function HomeContent() {
                 console.log("err:" + err);
             }
         )
-
     }
 
     return (
@@ -176,72 +229,43 @@ export default function HomeContent() {
                 title="Add Workout Plan"
                 centered
                 open={open}
-                onOk={() => setOpen(false)}
+                onOk={
+                    () => {
+                        setOpen(false);
+                        addPlan();
+                    }
+                }
                 onCancel={() => setOpen(false)}
                 width={600}
                 okText="Save"
                 cancelText="Cancel"
             >
-                <Input placeholder="Workout Plan Name" className="add_plan_name" />
-                <TextArea placeholder="Description..." className="add_plan_des" autoSize />
+                <Input placeholder="Workout Plan Name" className="add_plan_name"
+                    onChange={(e) => {
+                        setPlanName(e.target.value)
+                    }}
+                />
+                <TextArea placeholder="Description..." className="add_plan_des" autoSize
+                    onChange={(e) => {
+                        setInformation(e.target.value)
+                    }}
+                />
                 <ul>
-                    {/* <li>
-                        <h3 className="exercise_name">
-                            V Up
-                            <button className="delete_exercise"><DeleteTwoTone twoToneColor={normalColor} onMouseEnter={() => setnormalColor('red')} onMouseLeave={() => setnormalColor()} /></button>
-                        </h3>
-                        <ul className="workout_group">
-                            <ul className="excercise_theme">
-                                <li className="exercise_theme_bold">Set</li>
-                                <li className="exercise_theme_bold">kg</li>
-                                <li className="exercise_theme_bold">Reps</li>
-                            </ul>
-                            <ul className="excercise_theme">
-                                <li>
-                                    <div className="number_div">1</div>
-                                </li>
-                                <li>
-                                    <InputNumber min={1} max={500} defaultValue={0} onChange={() => { }} />
-                                </li>
-                                <li>
-                                    <InputNumber min={1} max={500} defaultValue={30} onChange={() => { }} />
-                                </li>
-                                <li>
-                                    <div className="delete_set">
-                                        <MinusSquareTwoTone />
-                                    </div>
-                                </li>
-                            </ul>
-                            {
-                                sets.map((set) =>
-                                    <ul className="excercise_theme" key={set}>
-                                        <li>
-                                            <div className="number_div">{set}</div>
-                                        </li>
-                                        <li>
-                                            <InputNumber min={1} max={500} defaultValue={0} onChange={() => { }} />
-                                        </li>
-                                        <li>
-                                            <InputNumber min={1} max={500} defaultValue={30} onChange={() => { }} />
-                                        </li>
-                                        <li>
-                                            <div className="delete_set">
-                                                <MinusSquareTwoTone />
-                                            </div>
-                                        </li>
-                                    </ul>
-                                )
-                            }
-                        </ul>
-                    </li> */}
                     {
-                        addedList.map(item =>
+                        addedList.map((item, index_out) =>
                         (
                             <li key={item.id}>
                                 <h3 className="exercise_name">
                                     {item.name}
                                     <button className="delete_exercise">
-                                        <DeleteTwoTone twoToneColor={normalColor} onMouseEnter={() => setnormalColor('red')} onMouseLeave={() => setnormalColor()} />
+                                        <DeleteTwoTone twoToneColor={item.deleteColor}
+                                            onMouseEnter={() => setDeleteColor(index_out, 'red')}
+                                            onMouseLeave={() => setDeleteColor(index_out, '#5151f0')}
+                                            onClick={() => {
+                                                const newArray = addedList.filter((_, i) => i !== index_out);
+                                                updateAddedList(newArray);
+                                            }}
+                                        />
                                     </button>
                                 </h3>
                                 <ul className="workout_group">
@@ -250,22 +274,37 @@ export default function HomeContent() {
                                         <li className="exercise_theme_bold">kg</li>
                                         <li className="exercise_theme_bold">Reps</li>
                                     </ul>
-                                    <ul className="excercise_theme">
-                                        <li>
-                                            <div className="number_div">1</div>
-                                        </li>
-                                        <li>
-                                            <InputNumber min={1} max={500} defaultValue={0} onChange={() => { }} />
-                                        </li>
-                                        <li>
-                                            <InputNumber min={1} max={500} defaultValue={30} onChange={() => { }} />
-                                        </li>
-                                        <li>
-                                            <div className="delete_set">
-                                                <MinusSquareOutlined className="MinusSquareOutlined" />
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    {item.sets.map((set, index) => (
+                                        <ul className="excercise_theme" key={index}>
+                                            <li>
+                                                <div className="number_div">{index + 1}</div>
+                                            </li>
+                                            <li>
+                                                <InputNumber min={1} max={500} defaultValue={0} onChange={() => { }} />
+                                            </li>
+                                            <li>
+                                                <InputNumber min={1} max={500} defaultValue={30} onChange={() => { }} />
+                                            </li>
+                                            <li>
+                                                <div className="delete_set">
+                                                    <MinusSquareOutlined className="MinusSquareOutlined"
+                                                        onClick={() => deleteSet(`${index_out}`, index)}
+                                                    />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    ))}
+                                    <Button type='primary' className='btn_addSet' size="small" onClick={() => {
+                                        // console.log('index_out:' + index_out);
+                                        const newArray = [...addedList];
+                                        newArray[index_out].sets.push(
+                                            {
+                                                kg: "0",
+                                                Reps: "30"
+                                            }
+                                        );
+                                        updateAddedList(newArray);
+                                    }}>+ Add Set</Button>
                                 </ul>
                             </li>)
                         )
@@ -273,7 +312,6 @@ export default function HomeContent() {
                 </ul>
                 <Button type='primary' className='btn_addWorkOut' onClick={() => {
                     setOpen2(true);
-                    addPlan();
                 }}>Add Exercises</Button>
                 <Modal title="Add Workout" open={open2} onOk={() => setOpen2(false)}
                     onCancel={() => setOpen2(false)} footer={[
