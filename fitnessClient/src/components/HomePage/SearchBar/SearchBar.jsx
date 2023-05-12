@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Input } from 'antd';
-import axios from "axios";
 import "./SearchBar.css"
 
-const { Search } = Input;
+const { Search,count } = Input;
 export default function SearchBar() {
     const[onload,setonload] = useState(false)
     const handleSearch=(key)=>{
@@ -12,8 +11,12 @@ export default function SearchBar() {
         PubSub.publish('getkey',key)
         setonload(false)
     }
+    const handleCheck=(e)=>{
+        console.log(e.target.value)
+        if (e.target.value == '') PubSub.publish('getkey','')
+    }
     return (
-        <Search className="searchBar" placeholder="input search text" onSearch={handleSearch} enterButton size="large" loading={onload}/>
+        <Search className="searchBar" placeholder="input search text" onChange={handleCheck} onSearch={handleSearch} enterButton size="large" loading={onload}/>
     );
 };
 //     const keyWords = useRef()
