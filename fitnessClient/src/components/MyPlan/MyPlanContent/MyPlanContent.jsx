@@ -34,6 +34,21 @@ export default function HomeContent() {
         )
     }
 
+    const getMuscle = () => {
+        const uuid = localStorage.getItem("uuid")
+        axios.get(`/api/plan/personal/planList?uuid` + uuid).then(
+            respose => {
+                console.log('data:' + respose.data.data);
+                // setRecipes(respose.data.data);
+                // const pages = 10 * Math.ceil(respose.data.totalcount / 12);
+                // PubSub.publish('gettotal', pages)
+            },
+            error => {
+                console.log("GetRecipesFail", error);
+            }
+        )
+    }
+
     const getCard = () => { }
 
     useEffect(() => {
