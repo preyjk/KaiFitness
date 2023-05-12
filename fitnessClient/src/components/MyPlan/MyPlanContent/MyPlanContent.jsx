@@ -175,9 +175,85 @@ export default function HomeContent() {
             }
         }
     ]
+    const dietGroup = [
+        {
+            "_id": {
+                "$oid": "645cbcebdab1b1c5fb11b2b2"
+            },
+            "name": "Avocado"
+        },
+        {
+            "_id": {
+                "$oid": "645cbcfadab1b1c5fb11b2b3"
+            },
+            "name": "Cheese"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd09dab1b1c5fb11b2b4"
+            },
+            "name": "Fish"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd18dab1b1c5fb11b2b5"
+            },
+            "name": "Carrot"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd23dab1b1c5fb11b2b6"
+            },
+            "name": "Apple"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd31dab1b1c5fb11b2b7"
+            },
+            "name": "Orange"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd3fdab1b1c5fb11b2b8"
+            },
+            "name": "Lemon"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd53dab1b1c5fb11b2b9"
+            },
+            "name": "Onion"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd69dab1b1c5fb11b2ba"
+            },
+            "name": "Strawberry"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd79dab1b1c5fb11b2bb"
+            },
+            "name": "Candy"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd8ddab1b1c5fb11b2bc"
+            },
+            "name": "Peas"
+        },
+        {
+            "_id": {
+                "$oid": "645cbd9cdab1b1c5fb11b2bd"
+            },
+            "name": "Milk"
+        }
+    ]
     // add workout plan
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [open_diet, setOpen_diet] = useState(false);
+    const [open_diet2, setOpen_diet2] = useState(false);
     const { TextArea } = Input;
     const [addedList, updateAddedList] = useState([]);
     const [checkedList, updateCheckList] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
@@ -280,7 +356,10 @@ export default function HomeContent() {
     return (
         <section className="homeContent">
             <div className="cotentCard">
-                <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
+                <div className="btn_addPlan" onClick={() => {
+                    type == "myPlanMuscle" ?
+                        setOpen(true) : setOpen_diet(true)
+                }}> + </div>
                 {
                     type == "myPlanMuscle" ?
                         recipes.map((recipe) => {
@@ -447,6 +526,155 @@ export default function HomeContent() {
                         <li>
                             <img className='img_workout' src="..\img_workout\Bicep_Curl_Dumbbell.png" alt="" />
                             <span><strong>Bicep Curl Dumbbell</strong></span>
+                            <Checkbox checked={checkedList[11]} onChange={() => { onChange(event, 12) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                    </ul>
+                </Modal>
+            </Modal>
+            <Modal
+                title="Add Diet Plan"
+                centered
+                open={open_diet}
+                onOk={
+                    () => {
+                        setOpen_diet(false);
+                        addPlan();
+                    }
+                }
+                onCancel={() => setOpen(false)}
+                width={600}
+                okText="Save"
+                cancelText="Cancel"
+            >
+                <Input placeholder="Diet Plan Name" className="add_plan_name"
+                    onChange={(e) => {
+                        setPlanName(e.target.value)
+                    }}
+                />
+                <TextArea placeholder="Description..." className="add_plan_des" autoSize
+                    onChange={(e) => {
+                        setInformation(e.target.value)
+                    }}
+                />
+                <ul>
+                    {
+                        addedList.map((item, index_out) =>
+                        (
+                            <li key={item.id}>
+                                <h3 className="exercise_name">
+                                    {item.name}
+                                    <button className="delete_exercise">
+                                        <DeleteTwoTone twoToneColor={item.deleteColor}
+                                            onMouseEnter={() => setDeleteColor(index_out, 'red')}
+                                            onMouseLeave={() => setDeleteColor(index_out, '#5151f0')}
+                                            onClick={() => {
+                                                const newArray = addedList.filter((_, i) => i !== index_out);
+                                                updateAddedList(newArray);
+                                            }}
+                                        />
+                                    </button>
+                                </h3>
+                                <ul className="workout_group">
+                                    <ul className="excercise_theme">
+                                        <li className="exercise_theme_bold">Set</li>
+                                        <li className="exercise_theme_bold">kg</li>
+                                        <li className="exercise_theme_bold">Reps</li>
+                                    </ul>
+                                    {item.sets.map((set, index) => (
+                                        <ul className="excercise_theme" key={index}>
+                                            <li>
+                                                <div className="number_div">{index + 1}</div>
+                                            </li>
+                                            <li>
+                                                <InputNumber min={1} max={500} defaultValue={0} onChange={() => { }} />
+                                            </li>
+                                            <li>
+                                                <InputNumber min={1} max={500} defaultValue={30} onChange={() => { }} />
+                                            </li>
+                                            <li>
+                                                <div className="delete_set">
+                                                    <MinusSquareOutlined className="MinusSquareOutlined"
+                                                        onClick={() => deleteSet(`${index_out}`, index)}
+                                                    />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    ))}
+                                </ul>
+                            </li>)
+                        )
+                    }
+                </ul>
+                <Button type='primary' className='btn_addWorkOut' onClick={() => {
+                    setOpen_diet2(true);
+                }}>Add Meal</Button>
+                <Modal title="Add Workout" open={open_diet2} onOk={() => setOpen_diet2(false)}
+                    onCancel={() => setOpen_diet2(false)}
+                    footer={[
+                        <Button key="Add" type='primary' onClick={addWorkOut}>Add</Button>,
+                        <Button key="Cancel" onClick={() => setOpen_diet2(false)}>Cancel</Button>
+                    ]} className='modal_add_workout'>
+                    <h3 className='theme_workout'>Fitness Action List</h3>
+                    <hr />
+                    <ul>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Avocado</strong></span>
+                            <Checkbox checked={checkedList[0]} onChange={() => { onChange(event, 1) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Cheese</strong></span>
+                            <Checkbox checked={checkedList[1]} onChange={() => { onChange(event, 2) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Fish</strong></span>
+                            <Checkbox checked={checkedList[2]} onChange={() => { onChange(event, 3) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Onion</strong></span>
+                            <Checkbox checked={checkedList[3]} onChange={() => { onChange(event, 4) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Carrot</strong></span>
+                            <Checkbox checked={checkedList[4]} onChange={() => { onChange(event, 5) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Apple</strong></span>
+                            <Checkbox checked={checkedList[5]} onChange={() => { onChange(event, 6) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Orange</strong></span>
+                            <Checkbox checked={checkedList[6]} onChange={() => { onChange(event, 7) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Lemon</strong></span>
+                            <Checkbox checked={checkedList[7]} onChange={() => { onChange(event, 8) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Onion</strong></span>
+                            <Checkbox checked={checkedList[8]} onChange={() => { onChange(event, 9) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Strawberry</strong></span>
+                            <Checkbox checked={checkedList[9]} onChange={() => { onChange(event, 10) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Candy</strong></span>
+                            <Checkbox checked={checkedList[10]} onChange={() => { onChange(event, 11) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\xg.png" alt="" />
+                            <span><strong>Peas</strong></span>
                             <Checkbox checked={checkedList[11]} onChange={() => { onChange(event, 12) }} className='checkBox_workOut'></Checkbox>
                         </li>
                     </ul>
