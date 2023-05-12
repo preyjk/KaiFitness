@@ -2,7 +2,7 @@
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
  * @Last Modified by: jack_KaiJing
- * @Last Modified time: 2023-05-12 23:09:15
+ * @Last Modified time: 2023-05-12 23:34:38
  */
 
 
@@ -16,7 +16,8 @@ import "./MyPlanContent.css"
 
 export default function HomeContent() {
     const [recipes, setRecipes] = useState([]);
-    const [type, setType] = useState(['mnew', 'muscle'])
+    const [dietPlanList, setDietPlanList] = useState([]);
+    const [type, setType] = useState("myPlanMuscle")
     const [page, setPage] = useState(1)
 
     // const getRecipes = () => {
@@ -38,16 +39,20 @@ export default function HomeContent() {
         // console.log(uuid);
         axios.get(`/api/plan/personal/planList?uuid=` + uuid).then(
             respose => {
-                console.log('personal data:' + respose.data);
+                // console.log('personal data:' + respose.data);
                 let newArr = [];
+                let newArr2 = [];
                 const planData = respose.data;
                 for (let index = 0; index < planData.length; index++) {
                     const element = planData[index];
                     if (element.type === "muscle") {
                         newArr.push(element)
+                    } else {
+                        newArr2.push(element)
                     }
                 }
                 setRecipes(newArr);
+                setDietPlanList(newArr2);
                 // PubSub.publish('getTotal', pages)
             },
             error => {
@@ -58,16 +63,15 @@ export default function HomeContent() {
 
     // const getCard = () => { }
 
-    // useEffect(() => {
-    //     const typeToken = PubSub.subscribe('gettype', (_, t) => {
-    //         setType(t)
-    //         setPage(1)
-    //     })
+    useEffect(() => {
+        const typeToken = PubSub.subscribe('getMyplanType', (_, t) => {
+            setType(t)
+        })
 
-    //     return () => {
-    //         PubSub.unsubscribe(typeToken)
-    //     }
-    // }, [])
+        return () => {
+            PubSub.unsubscribe(typeToken)
+        }
+    }, [])
 
     // useEffect(() => {
     //     const pageToken = PubSub.subscribe('getpage', (_, p) => {
@@ -80,6 +84,7 @@ export default function HomeContent() {
     // }, [])
 
     useEffect(() => {
+        console.log("type:" + type);
         getMuscle();
     }, [type, page])
 
@@ -277,9 +282,14 @@ export default function HomeContent() {
             <div className="cotentCard">
                 <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
                 {
-                    recipes.map((recipe) => {
-                        return <PlanCard key={recipe._id} {...recipe} />
-                    })
+                    type == "myPlanMuscle" ?
+                        recipes.map((recipe) => {
+                            return <PlanCard key={recipe._id} {...recipe} />
+                        })
+                        :
+                        dietPlanList.map((recipe) => {
+                            return <PlanCard key={recipe._id} {...recipe} />
+                        })
                 }
             </div>
             <Modal
