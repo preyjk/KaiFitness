@@ -30,7 +30,7 @@ export default function Recipes(props) {
                     </div>
                     <div className="primary-type">{type=='diet'? "Healthy Recipes": "Sport Plan"}</div>
                 </div>
-                <div className='mask'>
+                {/* <div className='mask'>
                     <h2>{detail}</h2>
                     <p>{type=='diet'? `Meal Type:${dietGroup[0].diet}`: `Sport Type:${muscleGroup[0].muscle}`}</p>
                     <p>{type=='diet'? `Prep Time:${dietGroup[0].weight}`: `Group Number:${muscleGroup[0].number}`} </p>
@@ -39,7 +39,7 @@ export default function Recipes(props) {
                         
                         Favorite
                     </Button>
-                </div>
+                </div> */}
             </a>
         </section>
   )
