@@ -18,7 +18,7 @@ export default function PageWapper() {
         }
     },[])
     useEffect(()=>{
-        const pages = PubSub.subscribe('gettotal',(_,t)=>{
+        const pages = PubSub.subscribe('getTotal',(_,t)=>{
             setPageNum(t);
         })
         
