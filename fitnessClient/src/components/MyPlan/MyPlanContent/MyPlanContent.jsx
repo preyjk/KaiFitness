@@ -1,8 +1,8 @@
 /*
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2023-05-12 19:40:49
+ * @Last Modified by: jack_KaiJing
+ * @Last Modified time: 2023-05-12 23:09:15
  */
 
 
@@ -19,29 +19,36 @@ export default function HomeContent() {
     const [type, setType] = useState(['mnew', 'muscle'])
     const [page, setPage] = useState(1)
 
-    const getRecipes = () => {
-        // axios.get(`/api/plan/personal/planList?uuid=` + uuid).then(
-        axios.get(`/api/plan/planList?tag=${type[1] == 'diet' ? 'diet' : 'muscle'}&pageNo=${page}&sort=${type[0] == ('mnew' || 'dnew') ? 'latest' : null}&queryContent=''`).then(
-            respose => {
-                console.log('data:' + respose.data.data);
-                setRecipes(respose.data.data);
-                const pages = 10 * Math.ceil(respose.data.totalcount / 12);
-                PubSub.publish('gettotal', pages)
-            },
-            error => {
-                console.log("GetRecipesFail", error);
-            }
-        )
-    }
+    // const getRecipes = () => {
+    //     axios.get(`/api/plan/planList?tag=${type[1] == 'diet' ? 'diet' : 'muscle'}&pageNo=${page}&sort=${type[0] == ('mnew' || 'dnew') ? 'latest' : null}&queryContent=''`).then(
+    //         respose => {
+    //             console.log('data:' + respose.data.data);
+    //             setRecipes(respose.data.data);
+    //             const pages = 10 * Math.ceil(respose.data.totalcount / 12);
+    //             PubSub.publish('gettotal', pages)
+    //         },
+    //         error => {
+    //             console.log("GetRecipesFail", error);
+    //         }
+    //     )
+    // }
 
     const getMuscle = () => {
         const uuid = localStorage.getItem("uuid")
-        axios.get(`/api/plan/personal/planList?uuid` + uuid).then(
+        // console.log(uuid);
+        axios.get(`/api/plan/personal/planList?uuid=` + uuid).then(
             respose => {
-                console.log('data:' + respose.data.data);
-                // setRecipes(respose.data.data);
-                // const pages = 10 * Math.ceil(respose.data.totalcount / 12);
-                // PubSub.publish('gettotal', pages)
+                console.log('personal data:' + respose.data);
+                let newArr = [];
+                const planData = respose.data;
+                for (let index = 0; index < planData.length; index++) {
+                    const element = planData[index];
+                    if (element.type === "muscle") {
+                        newArr.push(element)
+                    }
+                }
+                setRecipes(newArr);
+                // PubSub.publish('getTotal', pages)
             },
             error => {
                 console.log("GetRecipesFail", error);
@@ -49,31 +56,31 @@ export default function HomeContent() {
         )
     }
 
-    const getCard = () => { }
+    // const getCard = () => { }
+
+    // useEffect(() => {
+    //     const typeToken = PubSub.subscribe('gettype', (_, t) => {
+    //         setType(t)
+    //         setPage(1)
+    //     })
+
+    //     return () => {
+    //         PubSub.unsubscribe(typeToken)
+    //     }
+    // }, [])
+
+    // useEffect(() => {
+    //     const pageToken = PubSub.subscribe('getpage', (_, p) => {
+    //         setPage(p)
+    //     })
+
+    //     return () => {
+    //         PubSub.unsubscribe(pageToken)
+    //     }
+    // }, [])
 
     useEffect(() => {
-        const typeToken = PubSub.subscribe('gettype', (_, t) => {
-            setType(t)
-            setPage(1)
-        })
-
-        return () => {
-            PubSub.unsubscribe(typeToken)
-        }
-    }, [])
-
-    useEffect(() => {
-        const pageToken = PubSub.subscribe('getpage', (_, p) => {
-            setPage(p)
-        })
-
-        return () => {
-            PubSub.unsubscribe(pageToken)
-        }
-    }, [])
-
-    useEffect(() => {
-        getRecipes();
+        getMuscle();
     }, [type, page])
 
     // mock workout data list
@@ -257,7 +264,7 @@ export default function HomeContent() {
             response => {
                 console.log("successful:" + response.data);
                 // window.location.reload();
-                getRecipes();
+                getMuscle();
             },
             err => {
                 console.log("err:" + err);
