@@ -73,6 +73,7 @@
     max-height: 300px;
     border-radius: 0;
     padding: 20px 10px;
+    overflow: hidden;
 }
 
 .mask p{
@@ -80,6 +81,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    
 }
 
 
