@@ -385,6 +385,17 @@ export default function HomeContent() {
                     </ul>
                 </Modal>
             </Modal>
+               {
+                            openAddDiet &&
+                            <AddDiet
+                                open={openAddDiet}
+                                onOk={(editDiet) => {
+                                    console.log('接收新增的diet', editDiet);
+                                    setOpenAddDiet(false)
+                                }}
+                                onCancel={() => setOpenAddDiet(false)}
+                            />
+                        }
         </section>
     )
 }
