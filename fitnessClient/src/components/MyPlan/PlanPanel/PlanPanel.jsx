@@ -1,15 +1,13 @@
 import React,{useState,useEffect} from "react";
 import { Pagination } from 'antd';
-import "./PageWapper.css"
+import "./PlanPanel.css"
 
 
 export default function PageWapper() {
     
     const [current, setCurrent] = useState(1);
     const [pageNum, setPageNum] = useState(50);
-    // const getPage=()=>{
-    //     PubSub.publish('getpage',current)
-    // }
+
     useEffect(()=>{
         const typeToken = PubSub.subscribe('gettype',(_,t)=>{
             setCurrent(1);

@@ -2,7 +2,7 @@
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
  * @Last Modified by: Jack_KaiJing
- * @Last Modified time: 2023-05-12 18:39:32
+ * @Last Modified time: 2023-05-12 18:59:23
  */
 
 
@@ -22,7 +22,6 @@ export default function HomeContent() {
     const getRecipes = () => {
         axios.get(`/api/plan/planList?tag=${type[1] == 'diet' ? 'diet' : 'muscle'}&pageNo=${page}&sort=${type[0] == ('mnew' || 'dnew') ? 'latest' : null}`).then(
             respose => {
-                // console.log(respose.data)
                 setRecipes(respose.data.data);
                 const pages = 10 * Math.ceil(respose.data.totalcount / 12);
                 PubSub.publish('gettotal', pages)

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PubSub from 'pubsub-js'
-import { UpCircleTwoTone, DownCircleTwoTone, createFromIconfontCN, StarTwoTone, ProfileTwoTone } from '@ant-design/icons';
+import { createFromIconfontCN, StarTwoTone, ProfileTwoTone } from '@ant-design/icons';
 import { Menu } from 'antd';
 import "./Filter.css"
 
