@@ -16,7 +16,7 @@ export default function HomeContent() {
         // console.log('type:',type,' page: ',page)
         axios.get(`/api/plan/planList?tag=${type[1]=='diet'?'diet':'muscle'}&pageNo=${page}&sort=${type[0]==('mnew'||'dnew')?'latest':null}1&queryContent=${keyword}`).then(
             respose=>{
-                setRecipes(respose.data.data);
+                setRecipes(respose.data.data);  
                 const pages = 10*Math.ceil(respose.data.totalcount/12);
                 PubSub.publish('gettotal',pages)
             },
