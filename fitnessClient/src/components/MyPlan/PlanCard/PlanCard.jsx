@@ -1,10 +1,11 @@
 import React from 'react'
-import './Recipes.css'
+import './PlanCard.css'
+import { DeleteFilled } from '@ant-design/icons';
 
 export default function Recipes(props) {
-    const {name, information, type} = props
+    const { name, information, type } = props
     return (
-        <section className="Recipes">
+        <section className="planCard">
             <a href="#">
                 <div>
                     <div>
@@ -13,16 +14,17 @@ export default function Recipes(props) {
                     <div className="summary">
                         <h1 className="title">
                             {name}
-                            <span className="sub-title">                                
-                                {information}              
+                            <span className="sub-title">
+                                {information}
                             </span>
                         </h1>
                     </div>
-                    <div className="primary-type">{type=='diet'? "Healthy Recipes": "Sport Plan"}</div>
+                    <div className="primary-type">{type == 'diet' ? "Healthy Recipes" : "Sport Plan"}</div>
+                    <DeleteFilled className='delete_btn' />
                 </div>
             </a>
         </section>
-  )
+    )
 }
 
 
