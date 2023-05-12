@@ -1,4 +1,4 @@
-.Recipes{
+.planCard{
     background-color: #fff;
     min-height: 300px;
     height: inherit;
@@ -7,22 +7,23 @@
     overflow: hidden;
     position: relative;
     align-items: stretch;
-    cursor: pointer;
+    /* cursor: pointer; */
     max-height: 320px;
 }
 
-.Recipes a{
+.planCard a{
     text-decoration: none;
     color: black;
+    cursor: default;
 }
 
-.Recipes div{
+.planCard div{
     overflow: hidden;
     position: relative;
     width: 100%;
 }
 
-.Recipes img{
+.planCard img{
     display: block;
     width: 100%;
     height: 100%;
@@ -83,31 +84,31 @@
 }
 
 
-.Recipes:hover .mask{
+.planCard:hover .mask{
     background: #fff;
     bottom: 89%;
     padding: 30px 20px;
 }
 
 @media (max-width: 1024px) {
-    .Recipes:hover .mask{
+    .planCard:hover .mask{
         bottom: 72%;
         padding: 20px 10px;
     }
 }
 
 @media (max-width: 768px) {
-    .Recipes:hover .mask{
+    .planCard:hover .mask{
         bottom: 95%;
         padding: 20px 10px;
     }
-    .Recipes{
+    .planCard{
         width: calc(50% - 10px);
     }
 }
 
 @media (max-width: 540px) {
-    .Recipes:hover .mask{
+    .planCard:hover .mask{
         bottom: 98%;
         padding: 20px 10px;
     }
@@ -117,23 +118,23 @@
     p{
         font-size: 8px;
     }
-    .Recipes{
+    .planCard{
         width: calc(100% - 10px);
     }
-    .Recipes img{
+    .planCard img{
         max-height: 200px;
     }
 }
 
 @media (max-width: 539px) {
-    .Recipes:hover .mask{
+    .planCard:hover .mask{
         bottom: 98%;
         padding: 20px 10px;
     }
 }
 
 @media (max-width: 320px) {
-    .Recipes:hover .mask{
+    .planCard:hover .mask{
         bottom: 78%;
         padding: 20px 10px;
     }
@@ -143,3 +144,10 @@
     bottom: 3%;
 }
 
+.delete_btn{
+    color: gray;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}

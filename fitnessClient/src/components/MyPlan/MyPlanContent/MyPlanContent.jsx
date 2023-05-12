@@ -1,8 +1,8 @@
 /*
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
- * @Last Modified by: Jack_KaiJing
- * @Last Modified time: 2023-05-12 18:59:23
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2023-05-12 19:40:49
  */
 
 
@@ -11,7 +11,7 @@ import PubSub from 'pubsub-js'
 import axios from 'axios'
 import { Checkbox, Button, Modal, Input, InputNumber } from 'antd';
 import { DeleteTwoTone, MinusSquareOutlined } from '@ant-design/icons';
-import Recipes from "../Recipes/Recipes";
+import PlanCard from "../PlanCard/PlanCard";
 import "./MyPlanContent.css"
 
 export default function HomeContent() {
@@ -185,7 +185,7 @@ export default function HomeContent() {
                 "weight": element.sets[0].kg
             })
         }
-        console.log(group);
+        // console.log(group);
         const data = {
             "name": planName,
             "type": "muscle",
@@ -201,11 +201,13 @@ export default function HomeContent() {
                 }
             ]
         }
-        console.log('planName:' + planName);
-        console.log('information:' + information);
+        // console.log('planName:' + planName);
+        // console.log('information:' + information);
         axios.post(`/api/plan/personal/AddPlan`, data).then(
             response => {
                 console.log("successful:" + response.data);
+                // window.location.reload();
+                getRecipes();
             },
             err => {
                 console.log("err:" + err);
@@ -219,7 +221,7 @@ export default function HomeContent() {
                 <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
                 {
                     recipes.map((recipe) => {
-                        return <Recipes key={recipe._id} {...recipe} />
+                        return <PlanCard key={recipe._id} {...recipe} />
                     })
                 }
             </div>
@@ -312,9 +314,10 @@ export default function HomeContent() {
                     setOpen2(true);
                 }}>Add Exercises</Button>
                 <Modal title="Add Workout" open={open2} onOk={() => setOpen2(false)}
-                    onCancel={() => setOpen2(false)} footer={[
+                    onCancel={() => setOpen2(false)}
+                    footer={[
                         <Button key="Add" type='primary' onClick={addWorkOut}>Add</Button>,
-                        <Button key="Cancel">Cancel</Button>
+                        <Button key="Cancel" onClick={() => setOpen2(false)}>Cancel</Button>
                     ]} className='modal_add_workout'>
                     <h3 className='theme_workout'>Fitness Action List</h3>
                     <hr />
