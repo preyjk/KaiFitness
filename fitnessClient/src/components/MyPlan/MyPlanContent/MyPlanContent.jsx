@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import PubSub from 'pubsub-js'
 import axios from 'axios'
 import { Checkbox, Button, Modal, Input, InputNumber } from 'antd';
-import { DeleteTwoTone, MinusSquareTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, MinusSquareOutlined } from '@ant-design/icons';
 import Recipes from "../Recipes/Recipes";
 import "./MyPlanContent.css"
+import { element } from "prop-types";
 
 export default function HomeContent() {
     const [recipes, setRecipes] = useState([]);
@@ -65,33 +66,100 @@ export default function HomeContent() {
         {
             id: 3,
             name: "Cable Twist"
+        },
+        {
+            id: 4,
+            name: "Cross Body Crunch"
+        },
+        {
+            id: 5,
+            name: "Crunch"
+        },
+        {
+            id: 6,
+            name: "Bicep Curl Cable"
+        },
+        {
+            id: 7,
+            name: "Bench Dip"
+        },
+        {
+            id: 8,
+            name: "Bench Press"
+        },
+        {
+            id: 9,
+            name: "Hammer Curl Band"
+        },
+        {
+            id: 10,
+            name: "Hammer Curl Cabel"
+        },
+        {
+            id: 11,
+            name: "Hammer Curl Dumbbel"
+        },
+        {
+            id: 12,
+            name: "Bicep Curl Dumbbell"
         }
     ]
-    const test = (workoutId) => { console.log(workoutId); }
     // add workout plan
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const { TextArea } = Input;
     const [normalColor, setnormalColor] = useState('#5151f0');
-    const [workoutList, updateWorkoutList] = useState([]);
-    let addList = [];
+    const [addedList, updateAddedList] = useState([]);
+    const [checkedList, updateCheckList] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
+    const [addListPrepare, updateAddListPrepare] = useState([]);
 
     // select multipy workout
     const onChange = (e, id) => {
-        console.log(`checked = ${e.target.checked}`);
-        console.log('id:' + id);
-        addList.push({ id: id });
+        // console.log(`checked = ${e.target.checked}`);
+        const newArray = [...checkedList]; // 浅拷贝数组
+        newArray[id - 1] = !newArray[id - 1]; // 更新特定索引处的元素
+        updateCheckList(newArray); // 更新状态为新的数组
+        updateAddListPrepare(addListPrepare => [...addListPrepare, { id: workoutGroup[id].id, name: workoutGroup[id].name }])
     };
 
     const sets = [2, 3, 4]
 
     // add workout plan list
     const addWorkOut = (e) => {
-        console.log(addList);
-        updateWorkoutList([...workoutList, addList]),
-            () => {
-                console.log('workoutList' + workoutList);
+        // console.log('addList:' + addList);
+        const newArray = addListPrepare.slice(); // 使用 slice() 进行浅拷贝
+        updateAddedList(newArray); // 将副本数组设置为新的状态值
+        for (let index = 0; index < checkedList.length; index++) {
+            updateCheckList([false, false, false, false, false, false, false, false, false, false, false, false])
+        }
+        setOpen2(false)
+    }
+
+    const addPlan = () => {
+        const data = {
+            "name": "2.0",
+            "type": "muscle",
+            "imagBase64": "",
+            "information": "very healthy",
+            "detail": "very healthy",
+            "uuid": "644ba338dab1b1c5fb11b22d",
+            "group": [
+                {
+                    "muscle": "644b99dedab1b1c5fb11b216",
+                    "number": 10000,
+                    "weight": 10000
+                }
+            ]
+        }
+        axios.post(`/api/plan/personal/AddPlan?data`).then(
+            response => {
+                console.log("successful:" + response.data);
+            },
+            err => {
+                console.log("err:" + err);
             }
+        )
+
     }
 
     return (
@@ -117,7 +185,7 @@ export default function HomeContent() {
                 <Input placeholder="Workout Plan Name" className="add_plan_name" />
                 <TextArea placeholder="Description..." className="add_plan_des" autoSize />
                 <ul>
-                    <li>
+                    {/* <li>
                         <h3 className="exercise_name">
                             V Up
                             <button className="delete_exercise"><DeleteTwoTone twoToneColor={normalColor} onMouseEnter={() => setnormalColor('red')} onMouseLeave={() => setnormalColor()} /></button>
@@ -165,14 +233,16 @@ export default function HomeContent() {
                                 )
                             }
                         </ul>
-                    </li>
+                    </li> */}
                     {
-                        workoutList.map(workoutId =>
+                        addedList.map(item =>
                         (
-                            <li key={workoutId}>
+                            <li key={item.id}>
                                 <h3 className="exercise_name">
-                                    { }
-                                    <button className="delete_exercise"><DeleteTwoTone twoToneColor={normalColor} onMouseEnter={() => setnormalColor('red')} onMouseLeave={() => setnormalColor()} /></button>
+                                    {item.name}
+                                    <button className="delete_exercise">
+                                        <DeleteTwoTone twoToneColor={normalColor} onMouseEnter={() => setnormalColor('red')} onMouseLeave={() => setnormalColor()} />
+                                    </button>
                                 </h3>
                                 <ul className="workout_group">
                                     <ul className="excercise_theme">
@@ -192,7 +262,7 @@ export default function HomeContent() {
                                         </li>
                                         <li>
                                             <div className="delete_set">
-                                                <MinusSquareTwoTone />
+                                                <MinusSquareOutlined className="MinusSquareOutlined" />
                                             </div>
                                         </li>
                                     </ul>
@@ -201,73 +271,79 @@ export default function HomeContent() {
                         )
                     }
                 </ul>
-                <Button type='primary' className='btn_addWorkOut' onClick={() => setOpen2(true)}>Add Exercises</Button>
+                <Button type='primary' className='btn_addWorkOut' onClick={() => {
+                    setOpen2(true);
+                    addPlan();
+                }}>Add Exercises</Button>
                 <Modal title="Add Workout" open={open2} onOk={() => setOpen2(false)}
                     onCancel={() => setOpen2(false)} footer={[
                         <Button key="Add" type='primary' onClick={addWorkOut}>Add</Button>,
                         <Button key="Cancel">Cancel</Button>
                     ]} className='modal_add_workout'>
-                    <h3 className='theme_workout'>Core</h3>
+                    <h3 className='theme_workout'>Fitness Action List</h3>
                     <hr />
                     <ul>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Bicycle_Crunch.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Bicycle_Crunch.png" alt="" />
                             <span><strong>Bicycle Crunch</strong></span>
-                            <Checkbox onChange={() => { onChange(event, 1) }} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[0]} onChange={() => { onChange(event, 1) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Cable_Crunch.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Cable_Crunch.png" alt="" />
                             <span><strong>Cable Crunch</strong></span>
-                            <Checkbox onChange={() => { onChange(event, 2) }} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[1]} onChange={() => { onChange(event, 2) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Cable_Twist.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Cable_Twist.png" alt="" />
                             <span><strong>Cable Twist</strong></span>
-                            <Checkbox onChange={() => { onChange(event, 3) }} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[2]} onChange={() => { onChange(event, 3) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Cross_Body_Crunch.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Cross_Body_Crunch.png" alt="" />
                             <span><strong>Cross Body Crunch</strong></span>
-                            <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[3]} onChange={() => { onChange(event, 4) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\core\Crunch.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Crunch.png" alt="" />
                             <span><strong>Crunch</strong></span>
-                            <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[4]} onChange={() => { onChange(event, 5) }} className='checkBox_workOut'></Checkbox>
                         </li>
-                    </ul>
-                    <h3 className='theme_workout'>Arms</h3>
-                    <hr />
-                    <ul>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\arms\Bicep_Curl_Cable.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Bicep_Curl_Cable.png" alt="" />
                             <span><strong>Bicep Curl Cable</strong></span>
-                            <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[5]} onChange={() => { onChange(event, 6) }} className='checkBox_workOut'></Checkbox>
                         </li>
                         <li>
-                            <img className='img_workout' src="..\public\img_workout\arms\Bicep_Curl_Dumbbell.png" alt="" />
+                            <img className='img_workout' src="..\img_workout\Bench_Dip.png" alt="" />
+                            <span><strong>Bench Dip</strong></span>
+                            <Checkbox checked={checkedList[6]} onChange={() => { onChange(event, 7) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\img_workout\Bench_Press.png" alt="" />
+                            <span><strong>Bench Press</strong></span>
+                            <Checkbox checked={checkedList[7]} onChange={() => { onChange(event, 8) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\img_workout\Hammer_Curl_Band.png" alt="" />
+                            <span><strong>Hammer Curl Band</strong></span>
+                            <Checkbox checked={checkedList[8]} onChange={() => { onChange(event, 9) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\img_workout\Hammer_Curl_Cabel.png" alt="" />
+                            <span><strong>Hammer Curl Cabel</strong></span>
+                            <Checkbox checked={checkedList[9]} onChange={() => { onChange(event, 10) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\img_workout\Hammer_Curl_Dumbbell.png" alt="" />
+                            <span><strong>Hammer Curl Dumbbel</strong></span>
+                            <Checkbox checked={checkedList[10]} onChange={() => { onChange(event, 11) }} className='checkBox_workOut'></Checkbox>
+                        </li>
+                        <li>
+                            <img className='img_workout' src="..\img_workout\Bicep_Curl_Dumbbell.png" alt="" />
                             <span><strong>Bicep Curl Dumbbell</strong></span>
-                            <Checkbox onChange={onChange} className='checkBox_workOut'></Checkbox>
+                            <Checkbox checked={checkedList[11]} onChange={() => { onChange(event, 12) }} className='checkBox_workOut'></Checkbox>
                         </li>
                     </ul>
-                    <h3 className='theme_workout'>Back</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Chest</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Legs</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Shoulders</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Cardio</h3>
-                    <hr />
-                    <ul></ul>
-                    <h3 className='theme_workout'>Other</h3>
-                    <hr />
-                    <ul></ul>
                 </Modal>
             </Modal>
         </section>

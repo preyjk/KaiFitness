@@ -120,7 +120,7 @@ ul {
     border-radius: 5px;
     cursor: pointer;
     position: absolute;
-    right: 45px;
+    right: 42px;
 }
 
 .ant-modal-content{
@@ -153,4 +153,8 @@ ul {
     right: 0%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+
+.MinusSquareOutlined{
+    color: rgb(146, 144, 144);
 }
