@@ -2,7 +2,7 @@
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
  * @Last Modified by: jack_KaiJing
- * @Last Modified time: 2023-05-21 22:51:47
+ * @Last Modified time: 2023-05-21 23:31:28
  */
 
 
@@ -119,7 +119,7 @@ export default function HomeContent() {
             }
         }
     ]
-  
+
     const getPlan = () => {
         const uuid = localStorage.getItem("uuid")
         // console.log(uuid);
@@ -276,6 +276,10 @@ export default function HomeContent() {
                 console.log("err:" + err);
             }
         )
+        setPlanName("")
+        setInformation("")
+        updateAddedList([])
+        updateAddListPrepare([])
     }
 
     // open addPlan(workout or diet Modal)
