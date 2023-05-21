@@ -1,8 +1,8 @@
 /*
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:39:13 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2023-05-12 19:18:15
+ * @Last Modified by: jack_KaiJing
+ * @Last Modified time: 2023-05-21 21:00:47
  */
 
 
@@ -137,7 +137,7 @@ ul {
     right: 42px;
 }
 
-.ant-modal-content{
+.ant-modal-content {
     max-height: 800px;
     overflow: scroll;
 }
@@ -169,6 +169,30 @@ ul {
     transform: translate(-50%, -50%);
 }
 
-.MinusSquareOutlined{
+.MinusSquareOutlined {
     color: rgb(146, 144, 144);
+}
+
+.Diet_Para {
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.Diet_Para span {
+    display: inline-block;
+    flex: 1;
+    text-align: center;
+}
+
+.ingredient_item {
+    display: flex;
+}
+
+.ingredient_item_i {
+    display: inline-block;
+    flex: 1;
+    text-align: center;
+    padding: 10px;
 }

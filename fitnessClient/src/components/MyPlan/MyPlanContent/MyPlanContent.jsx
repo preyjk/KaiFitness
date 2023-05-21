@@ -2,7 +2,7 @@
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
  * @Last Modified by: jack_KaiJing
- * @Last Modified time: 2023-05-12 23:34:38
+ * @Last Modified time: 2023-05-21 22:35:24
  */
 
 
@@ -13,81 +13,25 @@ import { Checkbox, Button, Modal, Input, InputNumber } from 'antd';
 import { DeleteTwoTone, MinusSquareOutlined } from '@ant-design/icons';
 import PlanCard from "../PlanCard/PlanCard";
 import "./MyPlanContent.css"
+import ModalAddDiet from "./ModalAddDiet";
 
 export default function HomeContent() {
     const [recipes, setRecipes] = useState([]);
     const [dietPlanList, setDietPlanList] = useState([]);
     const [type, setType] = useState("myPlanMuscle")
     const [page, setPage] = useState(1)
-
-    // const getRecipes = () => {
-    //     axios.get(`/api/plan/planList?tag=${type[1] == 'diet' ? 'diet' : 'muscle'}&pageNo=${page}&sort=${type[0] == ('mnew' || 'dnew') ? 'latest' : null}&queryContent=''`).then(
-    //         respose => {
-    //             console.log('data:' + respose.data.data);
-    //             setRecipes(respose.data.data);
-    //             const pages = 10 * Math.ceil(respose.data.totalcount / 12);
-    //             PubSub.publish('gettotal', pages)
-    //         },
-    //         error => {
-    //             console.log("GetRecipesFail", error);
-    //         }
-    //     )
-    // }
-
-    const getMuscle = () => {
-        const uuid = localStorage.getItem("uuid")
-        // console.log(uuid);
-        axios.get(`/api/plan/personal/planList?uuid=` + uuid).then(
-            respose => {
-                // console.log('personal data:' + respose.data);
-                let newArr = [];
-                let newArr2 = [];
-                const planData = respose.data;
-                for (let index = 0; index < planData.length; index++) {
-                    const element = planData[index];
-                    if (element.type === "muscle") {
-                        newArr.push(element)
-                    } else {
-                        newArr2.push(element)
-                    }
-                }
-                setRecipes(newArr);
-                setDietPlanList(newArr2);
-                // PubSub.publish('getTotal', pages)
-            },
-            error => {
-                console.log("GetRecipesFail", error);
-            }
-        )
-    }
-
-    // const getCard = () => { }
-
-    useEffect(() => {
-        const typeToken = PubSub.subscribe('getMyplanType', (_, t) => {
-            setType(t)
-        })
-
-        return () => {
-            PubSub.unsubscribe(typeToken)
-        }
-    }, [])
-
-    // useEffect(() => {
-    //     const pageToken = PubSub.subscribe('getpage', (_, p) => {
-    //         setPage(p)
-    //     })
-
-    //     return () => {
-    //         PubSub.unsubscribe(pageToken)
-    //     }
-    // }, [])
-
-    useEffect(() => {
-        console.log("type:" + type);
-        getMuscle();
-    }, [type, page])
-
+    // Modal of adding workout plan
+    const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
+    // Modal of adding diet plan
+    const [open_dietModal, setOpen_dietModal] = useState(false);
+    const [open2_dietModal, setOpen2_dietModal] = useState(false);
+    const { TextArea } = Input;
+    const [addedList, updateAddedList] = useState([]);
+    const [checkedList, updateCheckList] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
+    const [addListPrepare, updateAddListPrepare] = useState([]);
+    const [planName, setPlanName] = useState();
+    const [information, setInformation] = useState();
     // mock workout data list
     const workoutGroup = [
         {
@@ -175,16 +119,74 @@ export default function HomeContent() {
             }
         }
     ]
-    // add workout plan
-    const [open, setOpen] = useState(false);
-    const [open2, setOpen2] = useState(false);
-    const { TextArea } = Input;
-    const [addedList, updateAddedList] = useState([]);
-    const [checkedList, updateCheckList] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);
-    const [addListPrepare, updateAddListPrepare] = useState([]);
-    const [planName, setPlanName] = useState();
-    const [information, setInformation] = useState();
 
+    const getPlan = () => {
+        const uuid = localStorage.getItem("uuid")
+        // console.log(uuid);
+        axios.get(`/api/plan/personal/planList?uuid=` + uuid).then(
+            respose => {
+                // console.log('personal data:' + respose.data);
+                let newArr = [];
+                let newArr2 = [];
+                const planData = respose.data;
+                // console.log(planData);
+                for (let index = 0; index < planData.length; index++) {
+                    const element = planData[index];
+                    if (element.type === "muscle") {
+                        newArr.push(element)
+                    } else {
+                        newArr2.push(element)
+                    }
+                }
+                setRecipes(newArr);
+                setDietPlanList(newArr2);
+                // PubSub.publish('getTotal', pages)
+            },
+            error => {
+                console.log("GetRecipesFail", error);
+            }
+        )
+    }
+
+    useEffect(() => {
+        const typeToken = PubSub.subscribe('getMyplanType', (_, t) => {
+            setType(t)
+        })
+
+        return () => {
+            PubSub.unsubscribe(typeToken)
+        }
+    }, [])
+
+    useEffect(() => {
+        // console.log("type:" + type);
+        getPlan();
+    }, [type, page])
+
+    // update plan panel
+    useEffect(() => {
+        const token = PubSub.subscribe('updatePlanPanel', (topic, updateFlag) => {
+            if (updateFlag == true) {
+                getPlan()
+            }
+        });
+
+        return () => {
+            PubSub.unsubscribe(token);
+        };
+    }, []);
+
+    // delete plan receive
+    useEffect(() => {
+        const token = PubSub.subscribe('deletePlan', (topic, planId) => {
+            // console.log(planId);
+            deletePlan(planId)
+        });
+
+        return () => {
+            PubSub.unsubscribe(token);
+        };
+    }, []);
 
     // select multipy workout
     const onChange = (e, id) => {
@@ -205,8 +207,6 @@ export default function HomeContent() {
                 deleteColor: '#5151f0'
             }])
     };
-
-    // get action id list (muscle)
 
     // delete btn hover
     const setDeleteColor = (index, color) => {
@@ -237,7 +237,7 @@ export default function HomeContent() {
         });
     }
 
-    // addPlan (post)
+    // addPlan
     const addPlan = () => {
         const uuid = localStorage.getItem('uuid');
         let group = [];
@@ -269,7 +269,8 @@ export default function HomeContent() {
             response => {
                 console.log("successful:" + response.data);
                 // window.location.reload();
-                getMuscle();
+                PubSub.publish("CardId", response.data)
+                getPlan();
             },
             err => {
                 console.log("err:" + err);
@@ -277,10 +278,38 @@ export default function HomeContent() {
         )
     }
 
+    // open addPlan(workout or diet Modal)
+    const openModalAddPlan = () => {
+        if (type == "myPlanMuscle") {
+            setOpen(true)
+        } else if (type == "myPlanDiet") {
+            // setOpen_dietModal(true)
+            PubSub.publish('openModalAddDiet', true)
+        }
+    }
+
+    // delete plan
+    const deletePlan = (planId) => {
+        const uuid = localStorage.getItem('uuid');
+        const data = {
+            uuid: uuid,
+            id: planId
+        }
+        axios.post(`/api/plan/personal/deletePlan`, data).then(
+            respose => {
+                console.log("successful delete");
+                getPlan()
+            },
+            error => {
+                console.log("deletePlanFail", error);
+            }
+        )
+    }
+
     return (
         <section className="homeContent">
             <div className="cotentCard">
-                <div className="btn_addPlan" onClick={() => setOpen(true)}> + </div>
+                <div className="btn_addPlan" onClick={openModalAddPlan}> + </div>
                 {
                     type == "myPlanMuscle" ?
                         recipes.map((recipe) => {
@@ -302,7 +331,14 @@ export default function HomeContent() {
                         addPlan();
                     }
                 }
-                onCancel={() => setOpen(false)}
+                onCancel={() => {
+                    setPlanName("")
+                    setInformation("")
+                    updateAddedList([])
+                    updateAddListPrepare([])
+                    setOpen(false)
+                }
+                }
                 width={600}
                 okText="Save"
                 cancelText="Cancel"
@@ -311,11 +347,13 @@ export default function HomeContent() {
                     onChange={(e) => {
                         setPlanName(e.target.value)
                     }}
+                    value={planName}
                 />
                 <TextArea placeholder="Description..." className="add_plan_des" autoSize
                     onChange={(e) => {
                         setInformation(e.target.value)
                     }}
+                    value={information}
                 />
                 <ul>
                     {
@@ -452,6 +490,7 @@ export default function HomeContent() {
                     </ul>
                 </Modal>
             </Modal>
+            <ModalAddDiet></ModalAddDiet>
         </section>
     )
 }

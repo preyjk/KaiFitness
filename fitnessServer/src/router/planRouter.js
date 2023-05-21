@@ -1,4 +1,3 @@
-
 const express = require("express");
 const Plan = require("../db/plan")
 const Muscle = require("../db/muscle")
@@ -187,8 +186,8 @@ planRouter.post("/personal/AddPlan", (req, res) => {
             dietGroup: dietGroup,
             muscleGroup: muscleGroup
         })
-        plan.save().then(() => {
-            res.status(200).send("succeed")
+        plan.save().then((data) => {
+            res.status(200).send(data.muscle)
         })
     }
     catch (e) {
@@ -239,6 +238,16 @@ planRouter.post("/personal/editPlan", (req, res) => {
     }
 })
 
+// delete plan
+planRouter.post("/personal/deletePlan", async (req, res) => {
+    const id = req.body.id
+    // console.log(req.body.id);
+    await Plan.findOneAndDelete({ _id: id }).then(() => {
+        res.send("successful delete")
+    }).catch((e) => {
+        console.log("delete error:" + e);
+    })
+})
 
 planRouter.get("/personal/dashboard", async (req, res) => {
     try {

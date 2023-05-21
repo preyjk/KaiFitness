@@ -1,9 +1,17 @@
-import React from 'react'
+/*
+ * @Author: jack_KaiJing 
+ * @Date: 2023-05-21 20:22:00 
+ * @Last Modified by: jack_KaiJing
+ * @Last Modified time: 2023-05-21 21:42:13
+ */
+import React, { useEffect, useState } from 'react'
 import './PlanCard.css'
 import { DeleteFilled } from '@ant-design/icons';
 
 export default function Recipes(props) {
     const { name, information, type } = props
+    const [planId, setPlanId] = useState();
+
     return (
         <section className="planCard">
             <a href="#">
@@ -20,7 +28,9 @@ export default function Recipes(props) {
                         </h1>
                     </div>
                     <div className="primary-type">{type == 'diet' ? "Healthy Recipes" : "Sport Plan"}</div>
-                    <DeleteFilled className='delete_btn' />
+                    <DeleteFilled className='delete_btn' onClick={() => {
+                        PubSub.publish("deletePlan", props._id)
+                    }} />
                 </div>
             </a>
         </section>
