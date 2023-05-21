@@ -120,6 +120,7 @@ export default function HomeContent() {
         }
     ]
 
+
     const getPlan = () => {
         const uuid = localStorage.getItem("uuid")
         // console.log(uuid);
