@@ -2,10 +2,8 @@
  * @Author: Jack_KaiJing
  * @Date: 2023-05-12 18:38:42 
  * @Last Modified by: jack_KaiJing
- * @Last Modified time: 2023-05-21 23:31:28
+ * @Last Modified time: 2023-05-23 15:34:19
  */
-
-
 import React, { useEffect, useState } from "react";
 import PubSub from 'pubsub-js'
 import axios from 'axios'
@@ -24,8 +22,6 @@ export default function HomeContent() {
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     // Modal of adding diet plan
-    const [open_dietModal, setOpen_dietModal] = useState(false);
-    const [open2_dietModal, setOpen2_dietModal] = useState(false);
     const { TextArea } = Input;
     const [addedList, updateAddedList] = useState([]);
     const [checkedList, updateCheckList] = useState([false, false, false, false, false, false, false, false, false, false, false, false]);

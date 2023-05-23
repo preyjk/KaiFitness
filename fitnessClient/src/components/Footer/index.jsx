@@ -19,7 +19,7 @@ const Footer = () => {
           </div>
         </div>
         <p className="tips">
-          Copyright © 2023 Fitness Blender. All rights reserved. Terms of Use
+          Copyright © 2023 Fitness. All rights reserved. Terms of Use
           Privacy Policy
         </p>
       </div>

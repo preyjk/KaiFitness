@@ -23,7 +23,7 @@
 }
 
 .SportPlan {
-  position: relative; 
+  /* position: relative;  */
   width: 35%;
   height: 80%;
   margin: 2.5%;
@@ -33,6 +33,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  overflow: scroll;
 }
 
 .RecipesPlan {
@@ -51,7 +52,7 @@
 .SportPlan h1 {
   font-size: 25px;
   color: #fff;
-  position: absolute; 
+  /* position: absolute;  */
   top: 0; 
   left: 1; 
   padding: 10px; 
@@ -122,3 +123,4 @@ input[type="checkbox"]:checked::before {
   cursor: pointer;
   background-color: rgb(70, 103, 212);
 }
+
