@@ -1,41 +1,24 @@
-//引入express包
+require("./db/dbUtils");
+
 const express = require("express");
 const router = require("./router/router.js");
-var { expressjwt: expressJWT } = require("express-jwt");
-const sercetKey = require("./secret.js");
-const userRouter  = require("./router/userRouter");
-const planRouter = require("./router/planRouter");
-const mongoose = require("mongoose");
 
-//用express创建web服务器，取代了使用http模块的方法createServer
+// createServer by express
 const app = express();
 
-//检查，解析token，设置需要权限的路由地址
-//自动为req对象添加user属性，包含解析后的token内容
-// app.use(
-//   expressJWT({ secret: sercetKey, algorithms: ["HS256"] }).unless({
-//     path: ["/user/signIn", "/user/signUp"],
-//   })
-// );
-
-//使res.body能被解析，否则post请求中的req.body无法被解析
+// make res.body can be paresed
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
+
 app.use(express.json({ limit: "1000kb" }));
 
-//使用路由
+// use router
 app.use(router);
 
-//user router
-app.use('/user',userRouter);
-
-//plan router
-app.use('/plan',planRouter);
-
-//express错误处理中间件
+// express错误处理中间件
 app.use((err, req, res, next) => {
   if (err.name == "UnauthorizedError") {
     return res.send({ status: 401, message: "无效的token" });
@@ -44,6 +27,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-// Start the DB running. Then, once it's connected, start the server.
-mongoose.connect("mongodb+srv://Cluster80360:TlBcUXBUVkFn@cluster80360.qjxcxce.mongodb.net/test", { useNewUrlParser: true })
-    .then(() => app.listen(900, () => console.log(`App server listening on port 900!`)));
+// start server on port 900 
+app.listen(900, ()=>{
+  console.log("App server listening on port 900!");
+})

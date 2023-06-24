@@ -1,25 +1,36 @@
 // 引入express包, 创建路由实例对象
 const express = require("express");
 const router = express.Router();
-//引入客户端服务操作包
-const cServices = require("../services/clientServices");
 
-// /**
-//  *
-//  * 客户端路由
-//  *
-//  */
+// 引入客户端服务操作包
+const userService  = require("../services/userServices");
+const planService = require("../services/planServices");
 
-// // 用户注册路由
-// router.post("/user/sign", cServices.sign);
+/**
+ * 
+ * user router
+ *  
+ */
 
-// // 用户登录路由
-// router.post("/user/login", cServices.login);
+// signUp router
+router.post("/user/signUp", userService.signUp);
 
-// // 用户登录状态查询
-// router.post("/user/confirmLogin", cServices.confirmLoginStatus);
+// signIn router
+router.get("/user/signIn", userService.signIn);
 
-// // 个人Profile路由
-// router.get("/profile", cServices.profile);
+/**
+ * 
+ * plan router
+ *  
+ */
+
+// get home plan router
+router.get("/plan/planList", planService.getHomePlan);
+
+// get dash board
+router.get("/personal/dashboard", planService.getDashBoard);
+
+// get personal plan list
+router.get("/plan/personal/planList", planService.getPersonalPlanList)
 
 module.exports = router;
