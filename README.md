@@ -1,6 +1,6 @@
 
 ## Overview
-ing...
+Welcome to kai fitness web app !
 
 ### Frontend Project setup
 
