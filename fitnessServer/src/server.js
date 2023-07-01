@@ -6,6 +6,14 @@ const router = require("./router/router.js");
 // createServer by express
 const app = express();
 
+//检查，解析token，设置需要权限的路由地址
+//自动为req对象添加user属性，包含解析后的token内容
+// app.use(
+//   expressJWT({ secret: secretKey, algorithms: ["HS256"] }).unless({
+//     path: ["/user/signIn", "/user/signUp"],
+//   })
+// );
+
 // make res.body can be paresed
 app.use(
   express.urlencoded({

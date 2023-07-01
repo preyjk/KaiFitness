@@ -27,10 +27,13 @@ router.get("/user/signIn", userService.signIn);
 // get home plan router
 router.get("/plan/planList", planService.getHomePlan);
 
-// get dash board
+// get dashboard
 router.get("/personal/dashboard", planService.getDashBoard);
 
 // get personal plan list
-router.get("/plan/personal/planList", planService.getPersonalPlanList)
+router.get("/plan/personal/planList", planService.getPersonalPlanList);
+
+// add personal plan
+router.post("/plan/personal/AddPlan", planService.addPlan);
 
 module.exports = router;
