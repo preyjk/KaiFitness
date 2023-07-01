@@ -85,6 +85,50 @@ exports.addPlan = async (req, res) => {
     }
 }
 
+// get plan detail
+exports.getPlanDetail = async (req, res) => {
+    try {
+        let id = req.query["templateId"]
+        Plan.findById(id)
+            .findOne()
+            .populate("muscleGroup.muscle")
+            .populate("dietGroup.diet")
+            .then((data) => {
+                console.log(data)
+                var returnData = {}
+                returnData.templateId = data._id
+                returnData.type = data.type
+                returnData.name = data.name
+                returnData.imagUrl = data.imagUrl
+                returnData.information = data.information
+                returnData.detail = data.detail
+                var group = []
+                data.muscleGroup.forEach(item => {
+                    var itemGroup = {}
+                    itemGroup.name = item.muscle.name
+                    itemGroup.id = item.muscle._id
+                    itemGroup.number = item.number
+                    itemGroup.weight = item.weight
+                    itemGroup.calore = item.calore
+                    group.push(itemGroup)
+                })
+                data.dietGroup.forEach(item => {
+                    var itemGroup = {}
+                    itemGroup.name = item.diet.name
+                    itemGroup.id = item.diet._id
+                    itemGroup.weight = item.weight
+                    itemGroup.calore = item.calore
+                    group.push(itemGroup)
+                })
+                returnData.group = group
+                res.status(200).json(returnData)
+            })
+    } catch (e) {
+        res.status(500).send(e)
+    }
+}
+
+// get dashboard
 exports.getDashBoard = async (req, res) => {
     try {
         let inCalorie = 0;
